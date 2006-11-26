@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="GWTx" default="all" basedir=".">
+    <description>
+        Build file for GWTx.
+    </description>
+
+    <target name="init">
+        <tstamp/>
+
+        <property name="gwt.basedir" value="C:/gwt-windows-1.2.22/" description="The base directory where GWT is installed."/>
+        <property name="gwt.compiler.style" value="OBF" description="GWTCompiler -style option value, defaults to OBF"/>
+
+
+        <path id="project.class.path">
+            <pathelement path="${basedir}/src"/>
+            <pathelement path="${basedir}/test"/>
+            <fileset dir="${gwt.basedir}">
+                <include name="gwt-user.jar"/>
+            </fileset>
+        </path>
+
+        <path id="gwt.class.path">
+            <fileset dir="${gwt.basedir}">
+                <include name="gwt-dev-*.jar"/>
+            </fileset>
+        </path>
+
+        <condition property="gwt.jvmarg" value="-XstartOnFirstThread" else="-Xmixed">
+            <os family="mac"/>
+        </condition>
+
+        <macrodef name="gwtshell">
+            <attribute name="module"/>
+            <attribute name="page"/>
+            <sequential>
+                <java classname="com.google.gwt.dev.GWTShell" failonerror="true" fork="true">
+                    <jvmarg value="${gwt.jvmarg}"/>
+                    <arg value="-style"/>
+                    <arg value="${gwt.compiler.style}"/>
+                    <arg value="-out"/>
+                    <arg value="${basedir}/www"/>
+                    <arg value="-gen"/>
+                    <arg value="${basedir}/gen"/>
+                    <arg value="@{module}/@{page}"/>
+                    <classpath path="src"/>
+                    <classpath path="bin"/>
+                    <classpath refid="project.class.path"/>
+                    <classpath refid="gwt.class.path"/>
+                </java>
+            </sequential>
+        </macrodef>
+
+        <macrodef name="gwtcompile">
+            <attribute name="module"/>
+            <sequential>
+                <java classname="com.google.gwt.dev.GWTCompiler" failonerror="true" fork="true">
+                    <arg value="-style"/>
+                    <arg value="${gwt.compiler.style}"/>
+                    <arg value="-out"/>
+                    <arg value="${basedir}/www"/>
+                    <arg value="-gen"/>
+                    <arg value="${basedir}/gen"/>
+                    <arg value="@{module}"/>
+                    <classpath path="src"/>
+                    <classpath path="bin"/>
+                    <classpath refid="project.class.path"/>
+                    <classpath refid="gwt.class.path"/>
+                </java>
+            </sequential>
+        </macrodef>
+
+    </target>
+
+    <target name="package" depends="init" description="Package the whole project as a jar">
+        <jar destfile="GWTx.jar">
+            <!-- Get everything; source, modules, html files -->
+            <fileset dir="src">
+                <include name="**"/>
+            </fileset>
+        </jar>
+        <copy file="doc/GWTx.txt" todir="."/>
+    </target>
+
+    <target name="package-java-beans" depends="init" description="Package the java.beans package as a jar">
+        <jar destfile="GWTx-java-beans.jar">
+            <!-- Get everything; source, modules, html files -->
+            <fileset dir="src">
+                <include name="com/googlecode/gwtx/java/Beans.gwt.xml"/>
+                <include name="com/googlecode/gwtx/java/beans/**"/>
+            </fileset>
+        </jar>
+        <copy file="doc/GWTx-java-beans.txt" todir="."/>
+    </target>
+
+    <target name="package-java-io" depends="init" description="Package the java.io package as a jar">
+        <jar destfile="GWTx-java-io.jar">
+            <!-- Get everything; source, modules, html files -->
+            <fileset dir="src">
+                <include name="com/googlecode/gwtx/java/Io.gwt.xml"/>
+                <include name="com/googlecode/gwtx/java/io/**"/>
+            </fileset>
+        </jar>
+        <copy file="doc/GWTx-java-io.txt" todir="."/>
+    </target>
+
+    <target name="package-java-util" depends="init" description="Package the java.util package as a jar">
+        <jar destfile="GWTx-java-util.jar">
+            <!-- Get everything; source, modules, html files -->
+            <fileset dir="src">
+                <include name="com/googlecode/gwtx/java/Util.gwt.xml"/>
+                <include name="com/googlecode/gwtx/java/util/**"/>
+            </fileset>
+        </jar>
+        <copy file="doc/GWTx-java-util.txt" todir="."/>
+    </target>
+
+    <target name="javadoc" depends="init" description="Generate Javadocs">
+        <property name="javadoc.dir" value="doc/javadoc"/>
+        <property name="javadoc.footer" value="${TODAY}"/>
+        <mkdir dir="${javadoc.dir}"/>
+        <javadoc destdir="${javadoc.dir}" use="true" author="true" version="true"
+                 overview="src/com/googlecode/gwtx/overview.html"
+                 windowtitle="${ant.project.name}">
+            <packageset dir="src">
+                <include name="**"/>
+                <exclude name="**/emul/**"/>
+            </packageset>
+            <packageset dir="src/com/googlecode/gwtx/java/beans/emul"/>
+            <packageset dir="src/com/googlecode/gwtx/java/io/emul"/>
+            <packageset dir="src/com/googlecode/gwtx/java/util/emul"/>
+            <doctitle><![CDATA[${ant.project.name}]]></doctitle>
+            <header><![CDATA[<a href="http://code.google.com/p/gwtx/">${ant.project.name}</a>]]></header>
+            <footer><![CDATA[${javadoc.footer}]]></footer>
+
+            <group title="Emulated JRE" packages="java:java.*"/>
+            <classpath refid="project.class.path"/>
+            <classpath refid="gwt.class.path"/>
+            <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+        </javadoc>
+    </target>
+
+    <target name="clean" depends="init" description="Remove generated files.">
+        <delete dir="bin"/>
+        <delete dir="gen"/>
+        <delete dir="www"/>
+        <delete>
+            <fileset dir="." includes="GWTx.jar"/>
+            <fileset dir="." includes="GWTx.txt"/>
+            <fileset dir="." includes="GWTx-*.jar"/>
+            <fileset dir="." includes="GWTx-*.txt"/>
+        </delete>
+        <delete dir="doc/javadoc"/>
+        <delete dir=".gwt-cache"/>
+        <delete dir="tomcat"/>
+    </target>
+
+    <target name="all" depends="package,package-java-beans,package-java-io,package-java-util" description="Build all packages."/>
+
+</project>

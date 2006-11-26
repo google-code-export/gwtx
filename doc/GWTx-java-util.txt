@@ -1,0 +1,12 @@
+GWTx-java-util.jar - The java.util part of the GWTx library.
+
+GWTx-java-util.jar contails the java.util emulation provided by the GWTx project.
+
+Dependencies: none
+
+Module XML:
+
+<inherits name="com.googlecode.gwtx.java.Util"/> :
+    This inherits the java.util emulation lib for use in your project.
+
+License: Apache License, Version 2.0
