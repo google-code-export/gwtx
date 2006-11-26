@@ -21,13 +21,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * This is a utility class that can be used by beans that support bound properties.
  *
  * @see <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/beans/PropertyChangeSupport.html">Sun's Javadocs</a>
  */
-public class PropertyChangeSupport {
+public class PropertyChangeSupport implements Serializable {
     private final Object source;
 
     private List listeners;
