@@ -35,6 +35,9 @@ public class PropertyChangeSupport implements Serializable {
     private Map propertyListeners = new HashMap();
 
     public PropertyChangeSupport(final Object source) {
+        if (source == null) {
+            throw new NullPointerException();
+        }
         this.source = source;
     }
 
