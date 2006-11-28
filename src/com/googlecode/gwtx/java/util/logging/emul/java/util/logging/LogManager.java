@@ -17,21 +17,15 @@
 
 package java.util.logging;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.WindowCloseListener;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
 
 /**
  * <code>LogManager</code> is used to maintain configuration properties of the
@@ -139,11 +133,7 @@ public class LogManager {
 
     // The line separator of the underlying OS
     // Use privileged code to read the line.separator system property
-    private static final String lineSeparator = getPrivilegedSystemProperty("line.separator"); //$NON-NLS-1$
-
-    // The shared logging permission
-    private static final LoggingPermission perm = new LoggingPermission(
-            "control", null); //$NON-NLS-1$
+    private static final String lineSeparator = "/";
 
     // the singleton instance
     static LogManager manager;
@@ -162,11 +152,10 @@ public class LogManager {
      * Instance variables
      * -------------------------------------------------------------------
      */
-    //FIXME: use weak reference to avoid heap memory leak    
     private HashMap loggers;
 
     // the configuration properties
-    private Properties props;
+    private HashMap props;
 
     // the property change listener
     private PropertyChangeSupport listeners;
@@ -179,34 +168,15 @@ public class LogManager {
 
     static {
 		// init LogManager singleton instance
-		AccessController.doPrivileged(new PrivilegedAction() {
-			public Object run() {
-				String className = System.getProperty("java.util.logging.manager"); //$NON-NLS-1$
-                
-				if (null != className) {
-					manager = (LogManager) getInstanceByClass(className);
-				}
-				if (null == manager) {
-					manager = new LogManager();
-				}
+        manager = new LogManager();
 
-				// read configuration
-				try {
-					manager.readConfiguration();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+        // if global logger has been initialized, set root as its parent
+        Logger root = new Logger("", null); //$NON-NLS-1$
+        root.setLevel(Level.INFO);
+        Logger.global.setParent(root);
 
-				// if global logger has been initialized, set root as its parent
-                Logger root = new Logger("", null); //$NON-NLS-1$
-                root.setLevel(Level.INFO);
-                Logger.global.setParent(root);
-                
-                manager.addLogger(root);
-                manager.addLogger(Logger.global);
-                return null;
-			}
-		});
+        manager.addLogger(root);
+        manager.addLogger(Logger.global);
 	}
 
     /**
@@ -217,18 +187,17 @@ public class LogManager {
      */
     protected LogManager() {
         loggers = new HashMap();
-        props = new Properties();
+        props = new HashMap();
         listeners = new PropertyChangeSupport(this);
         // add shutdown hook to ensure that the associated resource will be
         // freed when JVM exits
-        AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                Runtime.getRuntime().addShutdownHook(new Thread() {
-                    public void run() {
-                        reset();
-                    }
-                });
-                return null;
+        Window.addWindowCloseListener(new WindowCloseListener() {
+            public String onWindowClosing() {
+                return null; // nothing
+            }
+
+            public void onWindowClosed() {
+                reset();
             }
         });
     }
@@ -258,9 +227,6 @@ public class LogManager {
      *             <code>LoggingPermission("control")</code>
      */
     public void checkAccess() {
-        if (null != System.getSecurityManager()) {
-            System.getSecurityManager().checkPermission(perm);
-        }
     }
 
     /**
@@ -378,128 +344,7 @@ public class LogManager {
      * @return the value of property
      */
     public String getProperty(String name) {
-        return props.getProperty(name);
-    }
-
-    /**
-     * Re-initialize the properties and configuration. The initialization process
-     * is same as the <code>LogManager</code> instantiation.
-     * <p>
-     * A <code>PropertyChangeEvent</code> must be fired.
-     * </p>
-     * 
-     * @throws IOException
-     *             if any IO related problems happened
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action
-     */
-    public void readConfiguration() throws IOException {
-        checkAccess();
-        // check config class
-        String configClassName = System.getProperty("java.util.logging.config.class"); //$NON-NLS-1$
-        if (null == configClassName || null == getInstanceByClass(configClassName)) {
-            // if config class failed, check config file       
-            String configFile = System.getProperty("java.util.logging.config.file"); //$NON-NLS-1$
-            if (null == configFile) {
-                // if cannot find configFile, use default logging.properties
-                configFile = new StringBuilder().append(
-                        System.getProperty("java.home")).append(File.separator) //$NON-NLS-1$
-                        .append("lib").append(File.separator).append( //$NON-NLS-1$
-                                "logging.properties").toString(); //$NON-NLS-1$
-            }
-            InputStream input = null;
-            try {
-                input = new BufferedInputStream(new FileInputStream(configFile));
-                readConfigurationImpl(input);
-            } finally {
-                if(input != null){
-                    try {
-                        input.close();
-                    } catch (Exception e) {// ignore
-                    }
-                }
-            }
-        }
-    }
-
-    // use privilege code to get system property
-    static String getPrivilegedSystemProperty(final String key) {
-        return (String)AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                return System.getProperty(key);
-            }
-        });
-    }
-
-    // use SystemClassLoader to load class from system classpath
-    static Object getInstanceByClass(final String className) {
-        try {
-            Class clazz = ClassLoader.getSystemClassLoader().loadClass(
-                    className);
-            return clazz.newInstance();
-        } catch (Exception e) {
-            try {
-                Class clazz = Thread.currentThread().getContextClassLoader().loadClass(
-                        className);
-                return clazz.newInstance();
-            } catch (Exception innerE) {
-                //logging.20=Loading class "{0}" failed
-                System.err.println("Loading class \"" + className + "\" failed"); //$NON-NLS-1$
-                System.err.println(innerE);
-                return null;
-            }
-        }
-
-    }
-
-    // actual initialization process from a given input stream
-    private synchronized void readConfigurationImpl(InputStream ins)
-            throws IOException {
-        reset();
-        props.load(ins);
-        
-        // parse property "config" and apply setting
-        String configs = props.getProperty("config"); //$NON-NLS-1$
-        if (null != configs) {
-            StringTokenizer st = new StringTokenizer(configs, " "); //$NON-NLS-1$
-            while (st.hasMoreTokens()) {
-                String configerName = st.nextToken();
-                getInstanceByClass(configerName);
-            }
-        }
-        
-        // set levels for logger
-        Collection allLoggers = loggers.values();
-        for (Iterator it = allLoggers.iterator(); it.hasNext();) {
-            Logger logger = (Logger)it.next();
-            String property = props.getProperty(logger.getName() + ".level"); //$NON-NLS-1$
-            if (null != property) {
-                logger.setLevel(Level.parse(property));
-            }
-        }
-        listeners.firePropertyChange(null, null, null);
-    }
-
-
-    /**
-     * Re-initialize the properties and configuration from the given
-     * <code>InputStream</code>
-     * <p>
-     * A <code>PropertyChangeEvent</code> must be fired.
-     * </p>
-     * 
-     * @param ins
-     *            the input stream.
-     * @throws IOException
-     *             if any IO related problems happened
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action
-     */
-    public void readConfiguration(InputStream ins) throws IOException {
-        checkAccess();
-        readConfigurationImpl(ins);
+        return (String)props.get(name);
     }
 
     /**
@@ -515,8 +360,7 @@ public class LogManager {
      *             not have the required permissions to perform this action
      */
     public void reset() {
-        checkAccess();
-        props = new Properties();
+        props = new HashMap();
         Enumeration names = getLoggerNames();
         while(names.hasMoreElements()){
             String name = (String)names.nextElement();

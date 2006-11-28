@@ -45,13 +45,12 @@ package java.util.logging;
  * 
  */
 // TODO: Make this detect the browser's logging tool if it has one.
-public class ConsoleHandler extends StreamHandler {
+public class ConsoleHandler extends Handler {
 
     /**
      * Constructs a <code>ConsoleHandler</code> object.
      */
     public ConsoleHandler() {
-        super(System.err);
     }
 
     /**
@@ -59,7 +58,6 @@ public class ConsoleHandler extends StreamHandler {
      * closed.
      */
     public void close() {
-        super.close(false);
     }
 
     /**
@@ -68,8 +66,50 @@ public class ConsoleHandler extends StreamHandler {
      * @param record the log record to be logged
      */
     public void publish(LogRecord record) {
-        super.publish(record);
-        super.flush();
+        try {
+            if (this.isLoggable(record)) {
+                String msg = null;
+                try {
+                    msg = getFormatter().format(record);
+                } catch (Exception e) {
+                    // logging.17=Exception occurred while formatting the log record.
+                    getErrorManager().error("Exception occurred while formatting the log record.", //$NON-NLS-1$
+                            e, ErrorManager.FORMAT_FAILURE);
+                }
+                write(msg);
+            }
+        } catch (Exception e) {
+            // logging.18=Exception occurred while logging the record.
+            getErrorManager().error("Exception occurred while logging the record.", e, //$NON-NLS-1$
+                    ErrorManager.GENERIC_FAILURE);
+        }
+        flush();
+    }
+
+    public void flush() {
 
     }
+
+    // Write a string to the output stream.
+    private void write(String s) {
+        // FIXME: Implement me.
+        log(s);
+        try {
+            //this.writer.write(s);
+        } catch (Exception e) {
+            // logging.14=Exception occurred when writing to the output stream.
+            getErrorManager().error("Exception occurred when writing to the output stream.", e, //$NON-NLS-1$
+                    ErrorManager.WRITE_FAILURE);
+        }
+    }
+
+
+    public String toString() {
+        return "ConsoleHandler{" + super.toString() + "}";
+    }
+
+    private static native void log(String s) /*-{
+    //    $wnd.console.log(s);
+    $wnd.alert(S);
+    }-*/;
 }

@@ -17,10 +17,6 @@
 
 package java.util.logging;
 
-import java.security.AccessController; // FIXME: AccessController
-import java.security.PrivilegedExceptionAction; // FIXME: PrivilegedExceptionAction
-
-
 /**
  * A <code>Handler</code> put the description of log events into a cycled memory 
  * buffer.
@@ -90,49 +86,7 @@ public class MemoryHandler extends Handler {
      * <code>LogManager</code> properties or default values
      */
     public MemoryHandler() {
-        super();
-        String className = this.getClass().getName();
-        //init target
-        final String targetName = manager.getProperty(className+".target"); //$NON-NLS-1$
-        try {
-            Class targetClass = (Class)AccessController.doPrivileged(new PrivilegedExceptionAction(){
-                public Object run() throws Exception{
-                    ClassLoader loader = Thread.currentThread().getContextClassLoader();
-                    if(loader == null){
-                        loader = ClassLoader.getSystemClassLoader();
-                    }
-                    return loader.loadClass(targetName);
-                }
-            });
-            target = (Handler) targetClass.newInstance();
-        } catch (Exception e) {
-            // logging.10=Cannot load target handler:{0}
-            throw new RuntimeException("Cannot load target handler: " + targetName);
-        }
-        //init size
-        String sizeString = manager.getProperty(className+".size"); //$NON-NLS-1$
-        if (null != sizeString) {
-            try {
-                size = Integer.parseInt(sizeString);
-                if(size <= 0){
-                    size = DEFAULT_SIZE;
-                }
-            } catch (Exception e) {
-                printInvalidPropMessage(className+".size", sizeString, e); //$NON-NLS-1$
-            }
-        }
-        //init push level
-        String pushName = manager.getProperty(className+".push"); //$NON-NLS-1$
-        if (null != pushName) {
-            try {
-                push = Level.parse(pushName);
-            } catch (Exception e) {
-                printInvalidPropMessage(className+".push", pushName, e); //$NON-NLS-1$
-            }
-        }
-        //init other properties which are common for all Handler
-        initProperties("ALL", null, "java.util.logging.SimpleFormatter", null);  //$NON-NLS-1$//$NON-NLS-2$
-        buffer = new LogRecord[size];
+        this(new ConsoleHandler(), DEFAULT_SIZE, Level.SEVERE);
     }
     
     /**
@@ -158,7 +112,8 @@ public class MemoryHandler extends Handler {
         this.target = target;
         this.size = size;
         this.push = pushLevel;
-        initProperties("ALL", null, "java.util.logging.SimpleFormatter", null);  //$NON-NLS-1$//$NON-NLS-2$
+        setLevel(Level.ALL);
+        setFormatter(new SimpleFormatter());
         buffer = new LogRecord[size];
     }
     

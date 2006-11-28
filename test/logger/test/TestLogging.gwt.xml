@@ -1,0 +1,8 @@
+<module>
+
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name="com.googlecode.gwtx.java.util.Logging"/>
+
+    <entry-point class='logger.test.client.TestLogging'/>
+
+</module>
