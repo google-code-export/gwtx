@@ -18,9 +18,6 @@
 
 package java.util.logging;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.text.MessageFormat;
 import java.util.Date;
 
 /**
@@ -39,31 +36,12 @@ public class SimpleFormatter extends Formatter {
 
     public String format(LogRecord r) {
         StringBuffer sb = new StringBuffer();
-        sb.append(MessageFormat.format("{0, date} {0, time} ", //$NON-NLS-1$
-                new Object[] { new Date(r.getMillis()) }));
+        sb.append(new Date(r.getMillis()));
         sb.append(r.getLevel().getName()).append(" "); //$NON-NLS-1$
         sb.append(r.getSourceClassName()).append("."); //$NON-NLS-1$
         sb.append(r.getSourceMethodName()).append(": "); //$NON-NLS-1$
-        sb.append(formatMessage(r)).append(LogManager.getSystemLineSeparator());
-        if (null != r.getThrown()) {
-            sb.append("Throwable occurred: "); //$NON-NLS-1$
-            Throwable t = r.getThrown();
-            PrintWriter pw = null;
-            try {
-                StringWriter sw = new StringWriter();
-                pw = new PrintWriter(sw);
-                t.printStackTrace(pw);
-                sb.append(sw.toString());
-            } finally {
-                if(pw != null){
-                    try {
-                        pw.close();
-                    } catch (Exception e) {
-                        // ignore
-                    }
-                }
-            }
-        }
+        sb.append(formatMessage(r)).append("/");
+        // TODO: Figure out a stack trace if we can
         return sb.toString();
     }
 }

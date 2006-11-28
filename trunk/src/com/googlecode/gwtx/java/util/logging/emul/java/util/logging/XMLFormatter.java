@@ -18,11 +18,8 @@
 
 package java.util.logging;
 
-import java.security.AccessController; // FIXME: AccessController
-import java.security.PrivilegedAction; // FIXME: PrivilegedAction
-import java.text.MessageFormat; // FIXME: MessageFormat
 import java.util.Date;
-import java.util.ResourceBundle; // FIXME: ResourceBundle
+import java.util.ResourceBundle;
 
 /**
  * Format a given <code>LogRecord</code> into string represents XML. The DTD specified in 
@@ -34,7 +31,7 @@ import java.util.ResourceBundle; // FIXME: ResourceBundle
  */
 public class XMLFormatter extends Formatter {
 
-    private static final String lineSeperator = LogManager.getSystemLineSeparator();
+    private static final String lineSeperator = "/";
 
     private static final String indent = "    "; //$NON-NLS-1$
 
@@ -55,8 +52,7 @@ public class XMLFormatter extends Formatter {
         //call a method of LogRecord to ensure not null
         long time = r.getMillis();
         //format to date
-        String date = MessageFormat.format("{0, date} {0, time}", //$NON-NLS-1$
-                new Object[] { new Date(time) });
+        String date = new Date(time).toString();
 
         StringBuffer sb = new StringBuffer();
         sb.append(("<record>")).append(lineSeperator); //$NON-NLS-1$
@@ -172,9 +168,9 @@ public class XMLFormatter extends Formatter {
         	encoding = h.getEncoding();
         }
         if (null == encoding) {
-            encoding = getSystemProperty("file.encoding"); //$NON-NLS-1$
+            encoding = ""; // FIXME? detect somehow
         }
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         sb.append("<?xml version=\"1.0\" encoding=\"").append(encoding).append( //$NON-NLS-1$
                 "\" standalone=\"no\"?>").append(lineSeperator); //$NON-NLS-1$
         sb.append("<!DOCTYPE log SYSTEM \"logger.dtd\">").append(lineSeperator); //$NON-NLS-1$
@@ -190,16 +186,6 @@ public class XMLFormatter extends Formatter {
      */
     public String getTail(Handler h) {
         return "</log>"; //$NON-NLS-1$
-    }
-
-    //use privilege code to get system property
-    private static String getSystemProperty(final String key) {
-        return (String)AccessController.doPrivileged(
-          new PrivilegedAction() {
-            public Object run() {
-                return System.getProperty(key);
-            }
-        });
     }
 
 }

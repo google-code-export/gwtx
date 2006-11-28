@@ -18,9 +18,8 @@
 
 package java.util.logging;
 
-import java.nio.charset.Charset; // FIXME: Charset not supported by GWT
-import java.security.AccessController; // FIXME: AccessController
-import java.security.PrivilegedExceptionAction; // FIXME PrivilegedExceptionAction
+import com.google.gwt.core.client.GWT;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -79,7 +78,7 @@ public abstract class Handler {
         this.encoding = null;
         this.filter = null;
         this.formatter = null;
-        this.prefix = this.getClass().getName();
+        this.prefix = GWT.getTypeName(this);
     }
 
     /*
@@ -88,36 +87,6 @@ public abstract class Handler {
      * -------------------------------------------------------------------
      */
 
-    // get a instance from given class name, using Class.forName()
-    private Object getDefaultInstance(String className) {
-        Object result = null;
-        if (null == className) {
-            return result;
-        }
-        try {
-            result = Class.forName(className).newInstance();
-        } catch (Exception e) {
-            //ignore
-        }
-        return result;
-    }
-
-    // get a instance from given class name, using context classloader
-    private Object getCustomizeInstance(final String className)
-            throws Exception {
-        Class c = (Class)AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                    public Object run() throws Exception {
-                        ClassLoader loader = Thread.currentThread()
-                                .getContextClassLoader();
-                        if (null == loader) {
-                            loader = ClassLoader.getSystemClassLoader();
-                        }
-                        return loader.loadClass(className);
-                    }
-                });
-        return c.newInstance();
-    }
-
     // print error message in some format
     void printInvalidPropMessage(String key, String value, Exception e) {
         // logging.12=Invalid property value for
@@ -125,62 +94,6 @@ public abstract class Handler {
                 .append(prefix).append(":").append(key).append("/").append( //$NON-NLS-1$//$NON-NLS-2$
                         value).toString();
         errorMan.error(msg, e, ErrorManager.GENERIC_FAILURE);
-    }
-
-    /*
-     * init the common properties, including filter, level, formatter, and
-     * encoding
-     */
-    void initProperties(String defaultLevel, String defaultFilter,
-            String defaultFormatter, String defaultEncoding) {
-        LogManager manager = LogManager.getLogManager();
-
-        //set filter
-        final String filterName = manager.getProperty(prefix + ".filter"); //$NON-NLS-1$
-        if (null != filterName) {
-            try {
-                filter = (Filter) getCustomizeInstance(filterName);
-            } catch (Exception e1) {
-                printInvalidPropMessage("filter", filterName, e1); //$NON-NLS-1$
-                filter = (Filter) getDefaultInstance(defaultFilter);
-            }
-        } else {
-            filter = (Filter) getDefaultInstance(defaultFilter);
-        }
-
-        //set level
-        String levelName = manager.getProperty(prefix + ".level"); //$NON-NLS-1$
-        if (null != levelName) {
-            try {
-                level = Level.parse(levelName);
-            } catch (Exception e) {
-                printInvalidPropMessage("level", levelName, e); //$NON-NLS-1$
-                level = Level.parse(defaultLevel);
-            }
-        } else {
-            level = Level.parse(defaultLevel);
-        }
-
-        //set formatter
-        final String formatterName = manager.getProperty(prefix + ".formatter"); //$NON-NLS-1$
-        if (null != formatterName) {
-            try {
-                formatter = (Formatter) getCustomizeInstance(formatterName);
-            } catch (Exception e) {
-                printInvalidPropMessage("formatter", formatterName, e); //$NON-NLS-1$
-                formatter = (Formatter) getDefaultInstance(defaultFormatter);
-            }
-        } else {
-            formatter = (Formatter) getDefaultInstance(defaultFormatter);
-        }
-
-        //set encoding
-        final String encodingName = manager.getProperty(prefix + ".encoding"); //$NON-NLS-1$
-        try {
-            internalSetEncoding(encodingName);
-        } catch (UnsupportedEncodingException e) {
-            printInvalidPropMessage("encoding", encodingName, e); //$NON-NLS-1$
-        }
     }
 
     /**
@@ -308,13 +221,8 @@ public abstract class Handler {
         if (null == newEncoding) {
             this.encoding = null;
         } else {
-            if (Charset.isSupported(newEncoding)) {
-                this.encoding = newEncoding;
-            } else {
-                // logging.13=The encoding "{0}" is not supported.
-                throw new UnsupportedEncodingException("The encoding \"" + newEncoding + "\" is not supported.");
-            }
-
+            // logging.13=The encoding "{0}" is not supported.
+            throw new UnsupportedEncodingException("The encoding \"" + newEncoding + "\" is not supported.");
         }
     }
 
@@ -330,8 +238,7 @@ public abstract class Handler {
      * @throws UnsupportedEncodingException
      *             If the specified encoding is not supported by the runtime.
      */
-    public void setEncoding(String encoding) throws SecurityException,
-            UnsupportedEncodingException {
+    public void setEncoding(String encoding) throws Exception, UnsupportedEncodingException {
         LogManager.getLogManager().checkAccess();
         internalSetEncoding(encoding);
     }
@@ -410,6 +317,18 @@ public abstract class Handler {
         }
         LogManager.getLogManager().checkAccess();
         this.level = newLevel;
+    }
+
+
+    public String toString() {
+        return "Handler{" +
+                "errorMan=" + errorMan +
+                ", encoding='" + encoding + '\'' +
+                ", level=" + level +
+                ", formatter=" + formatter +
+                ", filter=" + filter +
+                ", prefix='" + prefix + '\'' +
+                '}';
     }
 }
 

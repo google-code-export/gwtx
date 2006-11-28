@@ -17,6 +17,8 @@
 
 package java.util.logging;
 
+import com.google.gwt.core.client.GWT;
+
 /**
  * <p>
  * An error reporting facility for {@link Handler} implementations to record any
@@ -99,7 +101,7 @@ public class ErrorManager {
             }
             called = true;
         }
-        System.err.println(this.getClass().getName()
+        System.err.println(GWT.getTypeName(this)
             + ": " + FAILURES[errorCode]); //$NON-NLS-1$
         if (message != null) {
             // logging.1E=Error message - {0}

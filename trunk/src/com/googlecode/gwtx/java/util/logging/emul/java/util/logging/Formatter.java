@@ -18,7 +18,7 @@
 
 package java.util.logging;
 
-import java.text.MessageFormat; // FIXME: MessageFormat
+//import java.text.MessageFormat; // FIXME: MessageFormat
 import java.util.ResourceBundle; // FIXME: ResourceBundle
 
 /**
@@ -94,7 +94,8 @@ public abstract class Formatter {
             if (pattern.indexOf("{0") >= 0 && null != params //$NON-NLS-1$
                     && params.length > 0) {
                 try {
-                    pattern = MessageFormat.format(pattern, params);
+                    // TODO: support formatting
+                    //pattern = MessageFormat.format(pattern, params);
                 } catch (IllegalArgumentException e) {
                     pattern = r.getMessage();
                 }

@@ -17,14 +17,10 @@
 
 package java.util.logging;
 
-import java.security.AccessController; // FIXME: AccessController not supported by GWT
-import java.security.PrivilegedAction; // FIXME: PrivilegedAction not supported by GWT
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale; // FIXME: Locale not supported by GWT
 import java.util.MissingResourceException;
-import java.util.ResourceBundle; // FIXME: v not supported by GWT
-import java.util.StringTokenizer; // FIXME: StringTokenizer not supported by GWT
+import java.util.ResourceBundle;
 import java.util.Iterator;
 
 /**
@@ -204,63 +200,6 @@ public class Logger {
      *             If the specified resource bundle can not be loaded.
      */
     static ResourceBundle loadResourceBundle(String resourceBundleName) {
-        // try context class loader to load the resource
-        ClassLoader cl = (ClassLoader)AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
-                        return Thread.currentThread().getContextClassLoader();
-                    }
-                });
-        if (null != cl) {
-            try {
-                return ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), cl);
-            } catch (MissingResourceException e) {
-                // Failed to load using context classloader, ignore
-            }
-        }
-        // try system class loader to load the resource
-        cl = (ClassLoader)AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
-                        return ClassLoader.getSystemClassLoader();
-                    }
-                });
-        if (null != cl) {
-            try {
-                return ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), cl);
-            } catch (MissingResourceException e) {
-                // Failed to load using system classloader, ignore
-            }
-        }
-        // try all class loaders up the class stack
-        final Class[] classes = (Class[])AccessController
-                .doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        return (new Logger.PrivateSecurityManager())
-                                .privateGetClassContext();
-                    }
-                });
-        // the first class, which is PrivateSecurityManager, is skipped
-        for (int i = 1; i < classes.length; i++) {
-            final int index = i;
-            try {
-                cl = (ClassLoader)AccessController.doPrivileged(
-                        new PrivilegedAction() {
-                            public Object run() {
-                                return classes[index].getClassLoader();
-                            }
-                        });
-                if (null == cl) {
-                    continue;
-                }
-                return ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), cl);
-            } catch (MissingResourceException e) {
-                // Failed to load using the current class's classloader, ignore
-            }
-        }
         // logging.8=Failed to load the specified resource bundle "{0}".
         throw new MissingResourceException("Failed to load the specified resource bundle \"" + resourceBundleName + "\".", resourceBundleName, null);
     }
@@ -421,34 +360,18 @@ public class Logger {
      * lock on this Logger when invoking this method. 
      */
     private void initHandler() {
-        if(!handlerInited){
-            synchronized (this) {
-                if (!handlerInited) {
-                    if (handlers == null) {
-                        handlers = new ArrayList();
-                    }
-                    if (manager == null) {
-                        return;
-                    }
-
-                    String handlerStr = manager
-                            .getProperty("".equals(name) ? "handlers" : name + ".handlers"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    if (null == handlerStr) {
-                        return;
-                    }
-                    StringTokenizer st = new StringTokenizer(handlerStr, " "); //$NON-NLS-1$
-                    while (st.hasMoreTokens()) {
-                        String handlerName = st.nextToken();
-                        Handler handler = (Handler) LogManager.getInstanceByClass(handlerName);
-                        handlers.add(handler);
-                        String level = manager.getProperty(handlerName
-                                + ".level"); //$NON-NLS-1$
-                        if (null != level) {
-                            handler.setLevel(Level.parse(level));
-                        }
-                    }
-                    handlerInited = true;
+        synchronized (this) {
+            if (!handlerInited) {
+                if (handlers == null) {
+                    handlers = new ArrayList();
                 }
+                if (manager == null) {
+                    return;
+                }
+
+                // TODO? Init the Browser's ConsoleHandler here.
+                handlers.add(new ConsoleHandler());
+                handlerInited = true;
             }
         }
     }
@@ -787,7 +710,7 @@ public class Logger {
         if (internalIsLoggable(Level.FINER)) {
         	String msg = "ENTRY"; //$NON-NLS-1$
 			if (null != params) {
-				StringBuilder msgBuffer = new StringBuilder("ENTRY"); //$NON-NLS-1$
+				StringBuffer msgBuffer = new StringBuffer("ENTRY"); //$NON-NLS-1$
 				for (int i = 0; i < params.length; i++) {
 					msgBuffer.append(" {" + i + "}"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
@@ -1087,9 +1010,11 @@ public class Logger {
              * call the handlers of this logger, throw any exception that
              * occurs
              */
+            jslog(record.toString()); // TODO: Remove me
             Handler[] allHandlers = getHandlers();
             for (int i = 0; i < allHandlers.length; i++) {
                 Handler element = allHandlers[i];
+                jslog(element.toString()); // TODO: Remove me
                 element.publish(record);
             }
             // call the parent's handlers if set useParentHandlers
@@ -1367,15 +1292,6 @@ public class Logger {
         }
     }
 
-    /*
-     * This security manager is used to access the class context.
-     */
-    static class PrivateSecurityManager extends SecurityManager {
-        public Class[] privateGetClassContext() {
-            return super.getClassContext();
-        }
-    }
-
     void setManager(LogManager manager) {
         if(this.manager != manager){
             this.manager = manager;
@@ -1410,5 +1326,12 @@ public class Logger {
         }
         handlerInited = false;
     }
+    
+    // TODO: Remove me
+    private static native void jslog(String s) /*-{
+        $wnd.console.log(s);
+        //$wnd.alert(S);
+    }-*/;
+
 }
 

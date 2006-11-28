@@ -18,7 +18,8 @@
 package java.util.logging;
 
 import java.io.Serializable;
-import java.util.ResourceBundle; // FIXME: ResourceBundle not supported by GWT
+import java.util.Arrays;
+import java.util.ResourceBundle;
 
 /**
  * A <code>LogRecord</code> object represents a logging request. It is passed
@@ -41,9 +42,6 @@ public class LogRecord implements Serializable {
 
     // Store the current value for the sequence number.
     private static long currentSequenceNumber = 0;
-
-    // Store the id for each thread.
-    private static ThreadLocal currentThreadId = new ThreadLocal(); // FIXME: ThreadLocal not supported by GWT
 
     // The base id as the starting point for thread ID allocation.
     private static int initThreadId = 0;
@@ -82,13 +80,6 @@ public class LogRecord implements Serializable {
      * @serial
      */
     private String message;
-
-    /**
-     * The ID of the thread that issued the logging call.
-     * 
-     * @serial
-     */
-    private int threadID;
 
     /**
      * The time that the event occurred, in milliseconds since 1970.
@@ -150,13 +141,6 @@ public class LogRecord implements Serializable {
 
         synchronized (LogRecord.class) {
             this.sequenceNumber = currentSequenceNumber++;
-            Integer id = (Integer)currentThreadId.get();
-            if (null == id) {
-                this.threadID = initThreadId;
-                currentThreadId.set(Integer.valueOf(initThreadId++));
-            } else {
-                this.threadID = id.intValue();
-            }
         }
 
         this.sourceClassName = null;
@@ -343,22 +327,8 @@ public class LogRecord implements Serializable {
      */
     private void initSource() {
         if (!sourceInited) {
-            StackTraceElement[] elements = (new Throwable()).getStackTrace();
-            int i = 0;
-            String current = null;
-            FINDLOG: for (; i < elements.length; i++) {
-                current = elements[i].getClassName();
-                if (current.equals(Logger.class.getName())) {
-                    break FINDLOG;
-                }
-            }
-            while(++i<elements.length && elements[i].getClassName().equals(current)) {
-            	// do nothing
-            }
-            if (i < elements.length) {
-                this.sourceClassName = elements[i].getClassName();
-                this.sourceMethodName = elements[i].getMethodName();
-            }
+            sourceClassName = "SourceClassName UNSUPPORTED";
+            sourceMethodName = "SourceMethodName UNSUPPORTED";
             sourceInited = true;
         }
     }
@@ -401,7 +371,7 @@ public class LogRecord implements Serializable {
      * @return the ID of the thread originating the message
      */
     public int getThreadID() {
-        return threadID;
+        return 0;
     }
 
     /**
@@ -411,7 +381,8 @@ public class LogRecord implements Serializable {
      *            the ID of the thread originating the message
      */
     public void setThreadID(int threadID) {
-        this.threadID = threadID;
+        // TODO: swallow this
+        throw new UnsupportedOperationException("Setting the ThreadID in webmode doesn't work");
     }
 
     /**
@@ -433,5 +404,21 @@ public class LogRecord implements Serializable {
      */
     public void setThrown(Throwable thrown) {
         this.thrown = thrown;
+    }
+
+
+    public String toString() {
+        return "LogRecord{" +
+                "level=" + level +
+                ", sequenceNumber=" + sequenceNumber +
+                ", sourceClassName='" + sourceClassName + '\'' +
+                ", sourceMethodName='" + sourceMethodName + '\'' +
+                ", message='" + message + '\'' +
+                ", millis=" + millis +
+                ", thrown=" + thrown +
+                ", loggerName='" + loggerName + '\'' +
+                ", parameters=" + (parameters == null ? null : Arrays.asList(parameters)) +
+                ", sourceInited=" + sourceInited +
+                '}';
     }
 }
