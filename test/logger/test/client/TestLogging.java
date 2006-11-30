@@ -21,21 +21,23 @@ public class TestLogging implements EntryPoint {
     private final Logger logger = Logger.getLogger(GWT.getTypeName(this));
 
     public void onModuleLoad() {
+        appendLoggers(logger);
+        RootPanel.get().add(new Label("==="));
 
         logger.finest("Finest");
-        //logger.finer("Finer");
-        //logger.fine("Fine");
+        logger.finer("Finer");
+        logger.fine("Fine");
         logger.config("Config");
         logger.info("Info");
-        //logger.warning("Warning");
-        //logger.severe("Severe");
+        logger.warning("Warning");
+        logger.severe("Severe");
 
         loggerP.warning("loggerP");
 
         RootPanel.get().add(new Label("Loaded: " + logger.getName() + " : " + logger.getLevel()));
         RootPanel.get().add(new Label("Loaded: " + loggerP.getName()));
 
-        Logger.getLogger("").getHandlers()[0].setLevel(Level.ALL);
+        //Logger.getLogger("").getHandlers()[0].setLevel(Level.ALL);
 
         logger.finest("Finest before");
         logger.setLevel(Level.FINEST);
@@ -43,7 +45,6 @@ public class TestLogging implements EntryPoint {
         logger.finest("Finest after");
 
 
-        appendLoggers(logger);
     }
 
     private void appendLoggers(Logger logger) {

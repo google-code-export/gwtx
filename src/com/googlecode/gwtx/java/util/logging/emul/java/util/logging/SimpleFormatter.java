@@ -34,14 +34,38 @@ public class SimpleFormatter extends Formatter {
         super();
     }
 
-    public String format(LogRecord r) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(new Date(r.getMillis()));
-        sb.append(r.getLevel().getName()).append(" "); //$NON-NLS-1$
-        sb.append(r.getSourceClassName()).append("."); //$NON-NLS-1$
-        sb.append(r.getSourceMethodName()).append(": "); //$NON-NLS-1$
-        sb.append(formatMessage(r)).append("/");
-        // TODO: Figure out a stack trace if we can
+    private static final Date DATE = new Date();
+
+    public String format(final LogRecord r) {
+        final StringBuffer sb = new StringBuffer();
+
+        DATE.setTime(r.getMillis());
+        // TODO: Use more terse date format 
+        sb.append(DATE.toGMTString()).append(" ");
+
+        sb.append(r.getLevel().getName()).append(" ");
+
+        if (r.getSourceClassName() != null) {
+            sb.append(r.getSourceClassName());
+        } else {
+            sb.append(r.getLoggerName());
+        }
+        if (r.getSourceMethodName() != null) {
+            sb.append(" ");
+            sb.append(r.getSourceMethodName());
+        }
+        sb.append(": ");
+        sb.append(formatMessage(r));
+
+        if (r.getThrown() != null) {
+            final Throwable thrown = r.getThrown();
+            if (thrown != null) {
+                final StackTraceElement[] ste = thrown.getStackTrace();
+                for (int i=0; i < ste.length; i++) {
+                    sb.append("\n").append(ste[i]);
+                }
+            }
+        }
         return sb.toString();
     }
 }

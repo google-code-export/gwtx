@@ -77,7 +77,7 @@ public abstract class Handler {
         this.level = DEFAULT_LEVEL;
         this.encoding = null;
         this.filter = null;
-        this.formatter = null;
+        this.formatter = new SimpleFormatter();
         this.prefix = GWT.getTypeName(this);
     }
 
@@ -323,10 +323,10 @@ public abstract class Handler {
     public String toString() {
         return "Handler{" +
                 "errorMan=" + errorMan +
-                ", encoding='" + encoding + '\'' +
+                (encoding != null ? ", encoding='" + encoding + '\'' : "") +
                 ", level=" + level +
                 ", formatter=" + formatter +
-                ", filter=" + filter +
+                (filter != null ?", filter=" + filter : "") +
                 ", prefix='" + prefix + '\'' +
                 '}';
     }

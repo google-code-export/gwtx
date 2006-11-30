@@ -17,6 +17,11 @@
 
 package java.util.logging;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+
 /**
  * A handler that writes log messages to the standard output stream
  * <code>System.err</code>.
@@ -51,6 +56,27 @@ public class ConsoleHandler extends Handler {
      * Constructs a <code>ConsoleHandler</code> object.
      */
     public ConsoleHandler() {
+        final Element[] metas = LogManager.getMetas();
+        if (metas != null) {
+            final String typeName = GWT.getTypeName(this);
+            for (int i=0; i < metas.length; i++) {
+                final Element meta = metas[i];
+                final String name = DOM.getAttribute(meta, "name");
+                if ("gwtx:property".equals(name)) {
+                    final String content = DOM.getAttribute(meta, "content");
+                    final int eq = content.indexOf("=");
+                    if (eq != -1) {
+                        final String cname = content.substring(0, eq);
+                        final String cvalue = content.substring(eq+1);
+                        
+                        //"java.util.logging.ConsoleHandler.level"
+                        if ((typeName + ".level").equals(cname)) {
+                            setLevel(Level.parse(cvalue));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -109,7 +135,7 @@ public class ConsoleHandler extends Handler {
     }
 
     private static native void log(String s) /*-{
-    //    $wnd.console.log(s);
-    $wnd.alert(S);
+        $wnd.console.log(s);
+        //$wnd.alert(s);
     }-*/;
 }
