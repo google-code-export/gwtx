@@ -20,7 +20,7 @@ package java.util;
 import com.google.gwt.core.client.GWT;
 
 /**
- * ResourceBundle is an abstract class which is the superclass of classes which
+ * STUB: ResourceBundle is an abstract class which is the superclass of classes which
  * provide locale specific resources. A bundle contains a number of named
  * resources, where the names are Strings. A bundle may have a parent bundle,
  * when a resource is not found in a bundle, the parent bundle is searched for

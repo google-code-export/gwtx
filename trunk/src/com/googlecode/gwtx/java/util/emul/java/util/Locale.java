@@ -20,7 +20,7 @@ package java.util;
 import java.io.Serializable;
 
 /**
- * Locale represents a language/country/variant combination. It is an identifier
+ * STUB: Locale represents a language/country/variant combination. It is an identifier
  * which dictates particular conventions for the presentation of information.
  * The language codes are two letter lowercase codes as defined by ISO-639. The
  * country codes are three letter uppercase codes as defined by ISO-3166. The
