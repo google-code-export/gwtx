@@ -327,8 +327,8 @@ public class LogRecord implements Serializable {
      */
     private void initSource() {
         if (!sourceInited) {
-            sourceClassName = "SourceClassName UNSUPPORTED";
-            sourceMethodName = "SourceMethodName UNSUPPORTED";
+            sourceClassName = null; // TODO: Analyze JS Stack
+            sourceMethodName = null; // TODO: Analyze JS Stack
             sourceInited = true;
         }
     }
@@ -411,14 +411,13 @@ public class LogRecord implements Serializable {
         return "LogRecord{" +
                 "level=" + level +
                 ", sequenceNumber=" + sequenceNumber +
-                ", sourceClassName='" + sourceClassName + '\'' +
-                ", sourceMethodName='" + sourceMethodName + '\'' +
-                ", message='" + message + '\'' +
+                (sourceClassName != null ? ", sourceClassName='" + sourceClassName + '\'' : "") +
+                (sourceMethodName != null ? ", sourceMethodName='" + sourceMethodName + '\'' : "") +
+                (message != null ? ", message='" + message + '\'' : "") +
                 ", millis=" + millis +
-                ", thrown=" + thrown +
+                (thrown != null ? ", thrown=" + thrown : "") +
                 ", loggerName='" + loggerName + '\'' +
-                ", parameters=" + (parameters == null ? null : Arrays.asList(parameters)) +
-                ", sourceInited=" + sourceInited +
+                (parameters != null ? ", parameters=" + Arrays.asList(parameters) : "") +
                 '}';
     }
 }

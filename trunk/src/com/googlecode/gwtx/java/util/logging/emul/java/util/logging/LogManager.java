@@ -19,6 +19,10 @@ package java.util.logging;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.GWT;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -172,12 +176,59 @@ public class LogManager {
 
         // if global logger has been initialized, set root as its parent
         Logger root = new Logger("", null); //$NON-NLS-1$
-        root.setLevel(Level.INFO);
+
+        boolean levelSet = false;
+        final Element[] metas = getMetas();
+        if (metas != null) {
+            for (int i=0; i < metas.length; i++) {
+                final Element meta = metas[i];
+                final String name = DOM.getAttribute(meta, "name");
+                if ("gwtx:property".equals(name)) {
+                    final String content = DOM.getAttribute(meta, "content");
+                    final int eq = content.indexOf("=");
+                    if (eq != -1) {
+                        final String cname = content.substring(0, eq);
+                        final String cvalue = content.substring(eq+1);
+
+                        if ((".level").equals(cname)) {
+                            root.setLevel(Level.parse(cvalue));
+                            levelSet = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!levelSet) {
+            root.setLevel(Level.INFO);
+        }
         Logger.global.setParent(root);
 
         manager.addLogger(root);
         manager.addLogger(Logger.global);
 	}
+
+    static Element[] getMetas() {
+        final JavaScriptObject metasHandel = getMetaTags();
+        final int metasLen = getMetaTagsLength(metasHandel);
+        final Element[] metas = new Element[metasLen];
+        for (int i=0; i < metasLen; i++) {
+            metas[i] = getMetaTag(metasHandel, i);
+        }
+        return metas;
+    }
+    private static native JavaScriptObject getMetaTags() /*-{
+        return $doc.getElementsByTagName("meta");
+    }-*/;
+
+    private static native int getMetaTagsLength(JavaScriptObject metas) /*-{
+        return metas.length;
+    }-*/;
+
+    private static native Element getMetaTag(JavaScriptObject metas, int i) /*-{
+        return metas[i];
+    }-*/;
+
 
     /**
      * Default constructor. This is not public because there should be only one

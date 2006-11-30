@@ -155,6 +155,10 @@ public class Logger {
         //-- not needed here.
         this.levelObjVal = null;
         this.levelIntVal = Level.INFO.intValue();
+
+        if ("".equals(name)) {
+            
+        }
     }
 
     //-- should be called under the lm lock
@@ -370,7 +374,9 @@ public class Logger {
                 }
 
                 // TODO? Init the Browser's ConsoleHandler here.
-                handlers.add(new ConsoleHandler());
+                if ("".equals(name)) {
+                    handlers.add(new ConsoleHandler());
+                }
                 handlerInited = true;
             }
         }
@@ -1010,11 +1016,9 @@ public class Logger {
              * call the handlers of this logger, throw any exception that
              * occurs
              */
-            jslog(record.toString()); // TODO: Remove me
             Handler[] allHandlers = getHandlers();
             for (int i = 0; i < allHandlers.length; i++) {
                 Handler element = allHandlers[i];
-                jslog(element.toString()); // TODO: Remove me
                 element.publish(record);
             }
             // call the parent's handlers if set useParentHandlers
@@ -1326,12 +1330,5 @@ public class Logger {
         }
         handlerInited = false;
     }
-    
-    // TODO: Remove me
-    private static native void jslog(String s) /*-{
-        $wnd.console.log(s);
-        //$wnd.alert(S);
-    }-*/;
-
 }
 
