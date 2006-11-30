@@ -166,6 +166,6 @@
         <delete dir="tomcat"/>
     </target>
 
-    <target name="all" depends="package,package-java-beans,package-java-io,package-java-util" description="Build all packages."/>
+    <target name="all" depends="package,package-java-beans,package-java-io,package-java-util,package-java-util-logging" description="Build all packages."/>
 
 </project>
