@@ -135,7 +135,8 @@ public class ConsoleHandler extends Handler {
     }
 
     private static native void log(String s) /*-{
-        $wnd.console.log(s);
-        //$wnd.alert(s);
+        if ($wnd.console) {
+            $wnd.console.log(s);
+        }
     }-*/;
 }

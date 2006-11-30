@@ -19,7 +19,7 @@ package java.util;
 
 
 /**
- * String tokenizer is used to break a string apart into tokens.
+ * NEEDS TESTING: String tokenizer is used to break a string apart into tokens.
  * 
  * If returnDelimiters is false, successive calls to nextToken() return maximal
  * blocks of characters that do not contain a delimiter.

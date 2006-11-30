@@ -108,10 +108,21 @@
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Util.gwt.xml"/>
-                <include name="com/googlecode/gwtx/java/util/**"/>
+                <include name="com/googlecode/gwtx/java/util/emul/**"/>
             </fileset>
         </jar>
         <copy file="doc/GWTx-java-util.txt" todir="."/>
+    </target>
+
+    <target name="package-java-util-logging" depends="init" description="Package the java.util.logging package as a jar">
+        <jar destfile="GWTx-java-util-logging.jar">
+            <!-- Get everything; source, modules, html files -->
+            <fileset dir="src">
+                <include name="com/googlecode/gwtx/java/util/Logging.gwt.xml"/>
+                <include name="com/googlecode/gwtx/java/util/logging/**"/>
+            </fileset>
+        </jar>
+        <copy file="doc/GWTx-java-util-logging.txt" todir="."/>
     </target>
 
     <target name="javadoc" depends="init" description="Generate Javadocs">
@@ -128,6 +139,7 @@
             <packageset dir="src/com/googlecode/gwtx/java/beans/emul"/>
             <packageset dir="src/com/googlecode/gwtx/java/io/emul"/>
             <packageset dir="src/com/googlecode/gwtx/java/util/emul"/>
+            <packageset dir="src/com/googlecode/gwtx/java/util/logging/emul"/>
             <doctitle><![CDATA[${ant.project.name}]]></doctitle>
             <header><![CDATA[<a href="http://code.google.com/p/gwtx/">${ant.project.name}</a>]]></header>
             <footer><![CDATA[${javadoc.footer}]]></footer>
