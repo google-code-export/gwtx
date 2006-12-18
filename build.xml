@@ -72,57 +72,52 @@
     </target>
 
     <target name="package" depends="init" description="Package the whole project as a jar">
-        <jar destfile="GWTx.jar">
+        <jar destfile="GWTx-${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="**"/>
             </fileset>
         </jar>
-        <copy file="doc/GWTx.txt" todir="."/>
     </target>
 
     <target name="package-java-beans" depends="init" description="Package the java.beans package as a jar">
-        <jar destfile="GWTx-java-beans.jar">
+        <jar destfile="GWTx-java-beans-${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Beans.gwt.xml"/>
                 <include name="com/googlecode/gwtx/java/beans/**"/>
             </fileset>
         </jar>
-        <copy file="doc/GWTx-java-beans.txt" todir="."/>
     </target>
 
     <target name="package-java-io" depends="init" description="Package the java.io package as a jar">
-        <jar destfile="GWTx-java-io.jar">
+        <jar destfile="GWTx-java-io-${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Io.gwt.xml"/>
                 <include name="com/googlecode/gwtx/java/io/**"/>
             </fileset>
         </jar>
-        <copy file="doc/GWTx-java-io.txt" todir="."/>
     </target>
 
     <target name="package-java-util" depends="init" description="Package the java.util package as a jar">
-        <jar destfile="GWTx-java-util.jar">
+        <jar destfile="GWTx-java-util-${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Util.gwt.xml"/>
                 <include name="com/googlecode/gwtx/java/util/emul/**"/>
             </fileset>
         </jar>
-        <copy file="doc/GWTx-java-util.txt" todir="."/>
     </target>
 
     <target name="package-java-util-logging" depends="init" description="Package the java.util.logging package as a jar">
-        <jar destfile="GWTx-java-util-logging.jar">
+        <jar destfile="GWTx-java-util-logging-${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/util/Logging.gwt.xml"/>
                 <include name="com/googlecode/gwtx/java/util/logging/**"/>
             </fileset>
         </jar>
-        <copy file="doc/GWTx-java-util-logging.txt" todir="."/>
     </target>
 
     <target name="javadoc" depends="init" description="Generate Javadocs">
