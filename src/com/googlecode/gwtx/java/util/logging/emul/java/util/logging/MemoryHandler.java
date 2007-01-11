@@ -125,7 +125,6 @@ public class MemoryHandler extends Handler {
      * 				does not have the required permissions to control this handler
      */
     public void close() {
-        manager.checkAccess();
         target.close();
         setLevel(Level.OFF);
     }
@@ -225,7 +224,6 @@ public class MemoryHandler extends Handler {
      * 				does not have the required permissions to control this handler
      */
     public void setPushLevel(Level newLevel) {
-        manager.checkAccess();
         newLevel.intValue();
         this.push = newLevel;
     }

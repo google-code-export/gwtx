@@ -440,7 +440,6 @@ public class LogManager {
         if(l == null){
             throw new NullPointerException();
         }
-        checkAccess();
         listeners.addPropertyChangeListener(l);
     }
 
@@ -455,7 +454,6 @@ public class LogManager {
      *             not have the required permissions to perform this action
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        checkAccess();
         listeners.removePropertyChangeListener(l);
     }
 }

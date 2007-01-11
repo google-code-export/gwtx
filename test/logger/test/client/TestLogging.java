@@ -9,11 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Handler;
 
 /**
- * Created by IntelliJ IDEA.
- * User: sandymac
- * Date: Nov 28, 2006
- * Time: 3:48:53 PM
- * To change this template use File | Settings | File Templates.
+ * Crude test app to excersize java.util.logging code in GWTx.
  */
 public class TestLogging implements EntryPoint {
 
@@ -22,7 +18,7 @@ public class TestLogging implements EntryPoint {
 
     public void onModuleLoad() {
         appendLoggers(logger);
-        RootPanel.get().add(new Label("==="));
+        RootPanel.get("out").add(new Label("==="));
 
         logger.finest("Finest");
         logger.finer("Finer");
@@ -34,29 +30,54 @@ public class TestLogging implements EntryPoint {
 
         loggerP.warning("loggerP");
 
-        RootPanel.get().add(new Label("Loaded: " + logger.getName() + " : " + logger.getLevel()));
-        RootPanel.get().add(new Label("Loaded: " + loggerP.getName()));
+        RootPanel.get("out").add(new Label("Loaded: " + logger.getName() + " : " + logger.getLevel()));
+        RootPanel.get("out").add(new Label("Loaded: " + loggerP.getName()));
 
         //Logger.getLogger("").getHandlers()[0].setLevel(Level.ALL);
 
         logger.finest("Finest before");
         logger.setLevel(Level.FINEST);
-        RootPanel.get().add(new Label("FINER loggable: " + logger.isLoggable(Level.FINER)));
+        RootPanel.get("out").add(new Label("FINER loggable: " + logger.isLoggable(Level.FINER)));
         logger.finest("Finest after");
 
+        Address addr = new Address();
+        addr.number = 101;
+        addr.street = "Anonymous Dr.";
+        addr.state = "Florida";
+        addr.zip = 12345;
+
+        Person p = new Person();
+        p.name = "Joe Bob";
+        p.age = 34;
+        p.address = addr;
+
+        logger.log(Level.INFO, "Created Person", new Object[] {p});
 
     }
 
-    private void appendLoggers(Logger logger) {
+    private void appendLoggers(final Logger logger) {
         if (logger == null) return;
-        RootPanel.get().add(new Label("Logger: " + logger.getName() + " : " + logger.getLevel()));
+        RootPanel.get("out").add(new Label("Logger: " + logger.getName() + " : " + logger.getLevel()));
 
         Handler[] handlers = logger.getHandlers();
         for (int i=0; i < handlers.length; i++) {
             Handler handler = handlers[i];
-            RootPanel.get().add(new Label("Handler: " + GWT.getTypeName(handler) + " : " + handler.getLevel()));
+            RootPanel.get("out").add(new Label("Handler: " + GWT.getTypeName(handler) + " : " + handler.getLevel()));
         }
 
         appendLoggers(logger.getParent());
+    }
+
+    static class Person {
+        String name;
+        int age;
+        Address address;
+    }
+
+    static class Address {
+        int number;
+        String street;
+        String state;
+        int zip;
     }
 }
