@@ -3,7 +3,7 @@
 
 = Compile Errors =
 
-If you get compile errors with GWTx such as: "The method close() is undefined for the type OutputStream" or "Errors in
+If you get compile errors with GWTx such as: "The method close() is undefined for the type `OutputStream`" or "Errors in
 `'jar:file:/path/to/GWTx.jar!/com/googlecode/gwtx/java/io/emul/java/io/ByteArrayOutputStream.java'"` then odds are you need to put the GWTx.jar before the gwt-user.jar in your project's classpath.
 
 See 
