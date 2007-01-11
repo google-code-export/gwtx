@@ -7,8 +7,8 @@
     <property-provider name="gwtx.logging.console">
         <![CDATA[
 try {
-    if ("console" in window) {
-        var c = window.console;
+    if ("console" in $wnd) {
+        var c = $wnd.console;
         if (c.log && c.debug && c.info && c.warn && c.error) {
             return "firebug";
         } else if (c.log) {
@@ -17,7 +17,7 @@ try {
             // TODO: issue warning?
             return "null";
         }
-    } else if ("opera" in window) {
+    } else if ("opera" in $wnd) {
         // XXX: untested
         if (opera.postError) {
             return "opera";
