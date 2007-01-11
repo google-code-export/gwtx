@@ -139,7 +139,6 @@ public abstract class Handler {
      *             have the required permission.
      */
     public ErrorManager getErrorManager() {
-        LogManager.getLogManager().checkAccess();
         return this.errorMan;
     }
 
@@ -239,7 +238,6 @@ public abstract class Handler {
      *             If the specified encoding is not supported by the runtime.
      */
     public void setEncoding(String encoding) throws Exception, UnsupportedEncodingException {
-        LogManager.getLogManager().checkAccess();
         internalSetEncoding(encoding);
     }
 
@@ -253,7 +251,6 @@ public abstract class Handler {
      *             have the required permission.
      */
     public void setErrorManager(ErrorManager em) {
-        LogManager.getLogManager().checkAccess();
         if (null == em) {
             throw new NullPointerException();
         }
@@ -270,7 +267,6 @@ public abstract class Handler {
      *             have the required permission.
      */
     public void setFilter(Filter newFilter) {
-        LogManager.getLogManager().checkAccess();
         this.filter = newFilter;
     }
 
@@ -298,7 +294,6 @@ public abstract class Handler {
      *             have the required permission.
      */
     public void setFormatter(Formatter newFormatter) {
-        LogManager.getLogManager().checkAccess();
         internalSetFormatter(newFormatter);
     }
 
@@ -315,7 +310,6 @@ public abstract class Handler {
         if (null == newLevel) {
             throw new NullPointerException();
         }
-        LogManager.getLogManager().checkAccess();
         this.level = newLevel;
     }
 

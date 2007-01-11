@@ -348,10 +348,6 @@ public class Logger {
             // logging.A=The 'handler' parameter is null.
             throw new NullPointerException("The 'handler' parameter is null."); //$NON-NLS-1$
         }
-        // Anonymous loggers can always add handlers
-        if (this.isNamed) {
-            LogManager.getLogManager().checkAccess();
-        }
         initHandler();
         synchronized(this){
             this.handlers.add(handler);
@@ -411,10 +407,6 @@ public class Logger {
      *             have the required permission.
      */
     public void removeHandler(Handler handler) {
-        // Anonymous loggers can always remove handlers
-        if (this.isNamed) {
-            LogManager.getLogManager().checkAccess();
-        }
         if (null == handler) {
             return;
         }
@@ -443,10 +435,6 @@ public class Logger {
      *             have the required permission.
      */
     public void setFilter(Filter newFilter) {
-        // Anonymous loggers can always set the filter
-        if (this.isNamed) {
-            LogManager.getLogManager().checkAccess();
-        }
         filter = newFilter;
     }
 
@@ -470,10 +458,6 @@ public class Logger {
      *             have the required permission.
      */
     public void setLevel(Level newLevel) {
-        // Anonymous loggers can always set the level
-        if (this.isNamed) {
-            LogManager.getLogManager().checkAccess();
-        }
         synchronized (LogManager.getLogManager()) {
             setLevelImpl(newLevel);
         }
@@ -501,10 +485,6 @@ public class Logger {
      *             have the required permission.
      */
     public void setUseParentHandlers(boolean notifyParentHandlers) {
-        // Anonymous loggers can always set the useParentHandlers flag
-        if (this.isNamed) {
-            LogManager.getLogManager().checkAccess();
-        }
         this.notifyParentHandlers = notifyParentHandlers;
     }
 
@@ -553,8 +533,6 @@ public class Logger {
             // logging.B=The 'parent' parameter is null.
             throw new NullPointerException("The 'parent' parameter is null."); //$NON-NLS-1$
         }
-        // even anonymous loggers are checked
-        LogManager.getLogManager().checkAccess();
         internalSetParent(parent);
     }
 
@@ -634,20 +612,22 @@ public class Logger {
      * and its name.
      */
     private void setResourceBundle(LogRecord record) {
-        if (null != this.resBundleName) {
-            record.setResourceBundle(this.resBundle);
-            record.setResourceBundleName(this.resBundleName);
-        } else {
-            Logger anyParent = this.parent;
-            // no need to synchronize here, because if resBundleName
-            // is not null, there is no chance to modify it
-            while (null != anyParent) {
-                if (null != anyParent.resBundleName) {
-                    record.setResourceBundle(anyParent.resBundle);
-                    record.setResourceBundleName(anyParent.resBundleName);
-                    return;
+        if (false) { // XXX: ResourceBundles currently aren't supported
+            if (null != this.resBundleName) {
+                record.setResourceBundle(this.resBundle);
+                record.setResourceBundleName(this.resBundleName);
+            } else {
+                Logger anyParent = this.parent;
+                // no need to synchronize here, because if resBundleName
+                // is not null, there is no chance to modify it
+                while (null != anyParent) {
+                    if (null != anyParent.resBundleName) {
+                        record.setResourceBundle(anyParent.resBundle);
+                        record.setResourceBundleName(anyParent.resBundleName);
+                        return;
+                    }
+                    anyParent = anyParent.parent;
                 }
-                anyParent = anyParent.parent;
             }
         }
     }
@@ -937,13 +917,7 @@ public class Logger {
      *            the parameter associated with the event that need to be logged
      */
     public void log(Level logLevel, String msg, Object param) {
-        if (internalIsLoggable(logLevel)) {
-            LogRecord record = new LogRecord(logLevel, msg);
-            record.setLoggerName(this.name);
-            record.setParameters(new Object[] { param });
-            setResourceBundle(record);
-            log(record);
-        }
+        log(logLevel, msg, new Object[] { param });
     }
 
     /**
@@ -1078,15 +1052,7 @@ public class Logger {
      */
     public void logp(Level logLevel, String sourceClass, String sourceMethod,
             String msg, Object param) {
-        if (internalIsLoggable(logLevel)) {
-            LogRecord record = new LogRecord(logLevel, msg);
-            record.setLoggerName(this.name);
-            record.setSourceClassName(sourceClass);
-            record.setSourceMethodName(sourceMethod);
-            record.setParameters(new Object[] { param });
-            setResourceBundle(record);
-            log(record);
-        }
+        logp(logLevel, sourceClass, sourceMethod, msg, new Object[] { param });
     }
 
     /**
@@ -1201,22 +1167,7 @@ public class Logger {
      */
     public void logrb(Level logLevel, String sourceClass, String sourceMethod,
             String bundleName, String msg, Object param) {
-        if (internalIsLoggable(logLevel)) {
-            LogRecord record = new LogRecord(logLevel, msg);
-            if (null != bundleName) {
-                try {
-                    record.setResourceBundle(loadResourceBundle(bundleName));
-                } catch (MissingResourceException e) {
-                    // ignore
-                }
-                record.setResourceBundleName(bundleName);
-            }
-            record.setLoggerName(this.name);
-            record.setSourceClassName(sourceClass);
-            record.setSourceMethodName(sourceMethod);
-            record.setParameters(new Object[] { param });
-            log(record);
-        }
+        logrb(logLevel, sourceClass, sourceMethod, bundleName, msg, new Object[] { param });
     }
 
     /**

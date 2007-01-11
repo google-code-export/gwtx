@@ -20,7 +20,8 @@ package java.util.logging;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
+
+import com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl;
 
 /**
  * A handler that writes log messages to the standard output stream
@@ -49,8 +50,12 @@ import com.google.gwt.core.client.JavaScriptObject;
  * </p>
  * 
  */
-// TODO: Make this detect the browser's logging tool if it has one.
 public class ConsoleHandler extends Handler {
+
+    /**
+     * Load the browser's logging tool impl.
+     */
+    private ConsoleHandlerImpl handlerImpl = (ConsoleHandlerImpl)GWT.create(ConsoleHandlerImpl.class);
 
     /**
      * Constructs a <code>ConsoleHandler</code> object.
@@ -77,6 +82,8 @@ public class ConsoleHandler extends Handler {
                 }
             }
         }
+
+        handlerImpl.init(this);
     }
 
     /**
@@ -94,15 +101,8 @@ public class ConsoleHandler extends Handler {
     public void publish(LogRecord record) {
         try {
             if (this.isLoggable(record)) {
-                String msg = null;
-                try {
-                    msg = getFormatter().format(record);
-                } catch (Exception e) {
-                    // logging.17=Exception occurred while formatting the log record.
-                    getErrorManager().error("Exception occurred while formatting the log record.", //$NON-NLS-1$
-                            e, ErrorManager.FORMAT_FAILURE);
-                }
-                write(msg);
+                // XXX: Do we need to catch formatting exceptions?
+                handlerImpl.publish(record, getFormatter());
             }
         } catch (Exception e) {
             // logging.18=Exception occurred while logging the record.
@@ -113,30 +113,9 @@ public class ConsoleHandler extends Handler {
     }
 
     public void flush() {
-
     }
-
-    // Write a string to the output stream.
-    private void write(String s) {
-        // FIXME: Implement me.
-        log(s);
-        try {
-            //this.writer.write(s);
-        } catch (Exception e) {
-            // logging.14=Exception occurred when writing to the output stream.
-            getErrorManager().error("Exception occurred when writing to the output stream.", e, //$NON-NLS-1$
-                    ErrorManager.WRITE_FAILURE);
-        }
-    }
-
 
     public String toString() {
         return "ConsoleHandler{" + super.toString() + "}";
     }
-
-    private static native void log(String s) /*-{
-        if ($wnd.console) {
-            $wnd.console.log(s);
-        }
-    }-*/;
 }
