@@ -10,4 +10,7 @@ See
 [http://groups.google.com/group/Google-Web-Toolkit/browse_thread/thread/66ab00f550dc3976/0abc5059ed9fd0e0?#0abc5059ed9fd0e0 this thread] for more details.
 
 
+= java.io.Serializable =
 
+Q: What does java.io.Serializable provided by GWTx do?
+A: Nothing. It just lets a class that implements Serializable compile and run in web mode. *It does not replace GWT's IsSerializable interface and providers zero functionality.* Using Serializable and IsSerializable is helpful if you want to use Java serialization somehow on the server (eg: clustering) and send the same class to the client via GWT's RPC.
