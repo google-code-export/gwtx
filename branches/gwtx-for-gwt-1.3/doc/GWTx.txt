@@ -1,0 +1,26 @@
+GWTx.jar - The complete GWTx library.
+
+GWTx.jar contails all modules provided by the GWTx project.
+
+Dependencies: none
+
+Module XML:
+
+<inherits name="com.googlecode.gwtx.Java"/> :
+    This inherits all of emulation lib for use in your project.
+
+or any of:
+
+<inherits name="com.googlecode.gwtx.java.Beans"/> :
+    This inherits the java.beans emulation lib for use in your project.
+
+<inherits name="com.googlecode.gwtx.java.Io"/> :
+    This inherits the java.io emulation lib for use in your project.
+
+<inherits name="com.googlecode.gwtx.java.Util"/> :
+    This inherits the java.util emulation lib for use in your project.
+
+<inherits name="com.googlecode.gwtx.java.util.Logging"/> :
+    This inherits the java.util.logging emulation lib for use in your project.
+
+License: Apache License, Version 2.0

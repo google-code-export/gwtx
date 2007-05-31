@@ -1,0 +1,6 @@
+<module>
+    <inherits name="com.googlecode.gwtx.java.Beans"/>
+    <inherits name="com.googlecode.gwtx.java.Io"/>
+    <inherits name="com.googlecode.gwtx.java.Util"/>
+    <inherits name="com.googlecode.gwtx.java.util.Logging"/>
+</module>

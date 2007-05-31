@@ -1,0 +1,15 @@
+GWTx-java-util-logging.jar - The java.util part of the GWTx library.
+
+GWTx-java-util-logging.jar contails the java.util.logging emulation provided by the GWTx project.
+
+Dependencies:
+    GWTx-java-beans.kar
+    GWTx-java-io.kar
+    GWTx-java-util.kar
+
+Module XML:
+
+<inherits name="com.googlecode.gwtx.java.util.Logging"/> :
+    This inherits the java.util.logging emulation lib for use in your project.
+
+License: Apache License, Version 2.0
