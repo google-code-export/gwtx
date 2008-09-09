@@ -1,0 +1,65 @@
+<module>
+
+    <inherits name="com.google.gwt.core.Core"/>
+
+    <define-property name="gwtx.logging.console" values="null,firebug,safari,opera"/>
+
+    <property-provider name="gwtx.logging.console">
+        <![CDATA[
+try {
+    if ("console" in $wnd) {
+        var c = $wnd.console;
+        if (c.log && c.debug && c.info && c.warn && c.error) {
+            return "firebug";
+        } else if (c.log) {
+            return "safari";
+        } else {
+            // TODO: issue warning?
+            return "null";
+        }
+    } else if ("opera" in $wnd) {
+        // XXX: untested
+        if (opera.postError) {
+            return "opera";
+        } else {
+            // TODO: issue warning?
+            return "null";
+        }
+    } else {
+        return "null";
+    }
+} catch(e){
+    $wnd.alert("Unexpected exception in logging console creator, using null logger: " + e);
+    return "null";
+}
+    ]]>
+    </property-provider>
+
+    <!-- Default rule -->
+    <!--
+    <replace-with class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl">
+        <when-type-is class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl"/>
+    </replace-with>
+    -->
+
+    <replace-with class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl">
+        <when-type-is class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl"/>
+        <when-property-is name="gwtx.logging.console" value="null"/>
+    </replace-with>
+
+    <replace-with class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImplFirebug">
+        <when-type-is class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl"/>
+        <when-property-is name="gwtx.logging.console" value="firebug"/>
+    </replace-with>
+
+    <replace-with class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImplOpera">
+        <when-type-is class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl"/>
+        <when-property-is name="gwtx.logging.console" value="opera"/>
+    </replace-with>
+
+    <replace-with class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImplSafari">
+        <when-type-is class="com.googlecode.gwtx.java.util.logging.client.ConsoleHandlerImpl"/>
+        <when-property-is name="gwtx.logging.console" value="safari"/>
+    </replace-with>
+
+</module>
