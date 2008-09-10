@@ -1,0 +1,18 @@
+#labels 1.5,roadmap
+#GWTx for GWT 1.5.
+
+http://gwtx.googlecode.com/svn/wiki/gwtx.png
+
+= Introduction =
+
+The current development release (SVN trunk) of GWTx focus on GWT 1.5 and Java5 compliance.
+
+= Details =
+
+  * Fix all compatibility issues with GWT 1.5
+  * Update emulation code based on Apache Harmony code base
+  * Investigate new java APIs to emulate
+
+= Versions =
+
+Starting with this release, GWTx use a versionning scheme to match the target GWT version: the next releases will be versionned 1.5.x. 
