@@ -66,8 +66,8 @@
       <resource>
         <directory>src</directory>
         <includes>
-          <include>**/emul/*.java</include>
-          <include>**/client/*.java</include>
+          <include>**/emul/**/*.java</include>
+          <include>**/client/**/*.java</include>
           <include>**/*.gwt.xml</include>
         </includes>
       </resource>
@@ -76,8 +76,8 @@
       <testResource>
         <directory>test</directory>
         <includes>
-          <include>**/emul/*.java</include>
-          <include>**/client/*.java</include>
+          <include>**/emul/**/*.java</include>
+          <include>**/client/**/*.java</include>
           <include>**/*.gwt.xml</include>
         </includes>
       </testResource>
