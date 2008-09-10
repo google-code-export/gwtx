@@ -17,7 +17,7 @@
 
  /*
   * This file is based on code from the Apache Harmony Project.
-  * http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/beans/src/main/java/java/beans/PropertyChangeEvent.java 
+  * http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/beans/src/main/java/java/beans/PropertyChangeEvent.java
   */
 
 package java.beans;
@@ -26,13 +26,13 @@ import java.util.EventObject;
 
 public class PropertyChangeEvent extends EventObject {
 
-    String propertyName;
+    private String propertyName;
 
-    Object oldValue;
+    private Object oldValue;
 
-    Object newValue;
+    private Object newValue;
 
-    Object propagationId;
+    private Object propagationId;
 
     public PropertyChangeEvent(Object source, String propertyName,
             Object oldValue, Object newValue) {
