@@ -17,31 +17,23 @@
 
  /*
   * This file is based on code from the Apache Harmony Project.
-  * http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/beans/src/main/java/java/beans/PropertyChangeSupport.java 
+  * http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/beans/src/main/java/java/beans/PropertyChangeSupport.java
   */
 
 package java.beans;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PropertyChangeSupport implements Serializable {
 
     private transient List<PropertyChangeListener> globalListeners = new ArrayList<PropertyChangeListener>();
 
-    private Hashtable<String, PropertyChangeSupport> children = new Hashtable<String, PropertyChangeSupport>();
+    private HashMap<String, PropertyChangeSupport> children = new HashMap<String, PropertyChangeSupport>();
 
     private Object source;
-
-    @SuppressWarnings("unused")
-    // for serialization compatibility
-    private int propertyChangeSupportSerializedDataVersion = 1;
 
     public PropertyChangeSupport(Object sourceBean) {
         if (sourceBean == null) {
