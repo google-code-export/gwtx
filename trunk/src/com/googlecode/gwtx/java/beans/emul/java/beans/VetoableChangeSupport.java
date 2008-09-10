@@ -22,18 +22,15 @@
 
 package java.beans;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 public class VetoableChangeSupport implements Serializable {
 
-    private Hashtable<String, VetoableChangeSupport> children = new Hashtable<String, VetoableChangeSupport>();
+    private HashMap<String, VetoableChangeSupport> children = new HashMap<String, VetoableChangeSupport>();
 
     private transient ArrayList<VetoableChangeListener> globalListeners = new ArrayList<VetoableChangeListener>();
 
