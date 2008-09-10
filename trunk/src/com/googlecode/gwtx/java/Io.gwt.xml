@@ -1,4 +1,5 @@
 <module>
     <inherits name="com.googlecode.gwtx.java.Net"/>
+    <inherits name="com.googlecode.gwtx.java.Lang"/>
     <inherits name="com.googlecode.gwtx.java.io.emul.Emulation"/>
 </module>
