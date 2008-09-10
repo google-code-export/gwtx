@@ -56,7 +56,7 @@ public class FilterOutputStream extends OutputStream {
      * @throws IOException
      *             If an error occurs attempting to close this stream.
      */
-    @Override
+    //@Override
     public void close() throws IOException {
         try {
             flush();
@@ -76,7 +76,7 @@ public class FilterOutputStream extends OutputStream {
      *             If an error occurs attempting to flush this
      *             FilterOutputStream.
      */
-    @Override
+    //@Override
     public void flush() throws IOException {
         out.flush();
     }
@@ -93,7 +93,7 @@ public class FilterOutputStream extends OutputStream {
      *             If an error occurs attempting to write to this
      *             FilterOutputStream.
      */
-    @Override
+    //@Override
     public void write(byte buffer[]) throws IOException {
         write(buffer, 0, buffer.length);
     }
@@ -117,7 +117,7 @@ public class FilterOutputStream extends OutputStream {
      * @throws IndexOutOfBoundsException
      *             If offset or count are outside of bounds.
      */
-    @Override
+    //@Override
     public void write(byte buffer[], int offset, int count) throws IOException {
         // avoid int overflow, force null buffer check first
         if (offset > buffer.length || offset < 0 || count < 0

@@ -77,8 +77,8 @@ public class ByteArrayOutputStream extends OutputStream {
      * @throws IOException
      *             If an error occurs attempting to close this OutputStream.
      */
-    @Override
-    public void close() throws IOException {
+    //@Override
+    public void close() throws java.io.IOException {
         /**
          * Although the spec claims "A closed stream cannot perform output
          * operations and cannot be reopened.", this implementation must do
@@ -140,7 +140,11 @@ public class ByteArrayOutputStream extends OutputStream {
 
     @Override
     public String toString() {
-        return new String(buf, 0, count);
+        char[] c = new char[count];
+        for (int i=0; i < count; i++) {
+            c[i] = (char)buf[i];
+        }
+        return new String(c);
     }
 
     /**
@@ -179,8 +183,8 @@ public class ByteArrayOutputStream extends OutputStream {
      * @throws UnsupportedEncodingException
      *             If declared encoding is not supported
      */
-    public String toString(String enc) throws UnsupportedEncodingException {
-        return new String(buf, 0, count, enc);
+    public String toString(String enc) throws java.io.UnsupportedEncodingException {
+        return toString();
     }
 
     /**
@@ -200,7 +204,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @throws IndexOutOfBoundsException
      *             If offset or count are outside of bounds.
      */
-    @Override
+    //@Override
     public synchronized void write(byte[] buffer, int offset, int len) {
         // avoid int overflow
         if (offset < 0 || offset > buffer.length || len < 0
@@ -224,7 +228,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @param oneByte
      *            the byte to be written
      */
-    @Override
+    //@Override
     public synchronized void write(int oneByte) {
         if (count == buf.length) {
             expand(1);
@@ -242,7 +246,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @throws IOException
      *             If an error occurs when writing to output stream
      */
-    public synchronized void writeTo(OutputStream out) throws IOException {
+    public synchronized void writeTo(java.io.OutputStream out) throws java.io.IOException {
         out.write(buf, 0, count);
     }
 }

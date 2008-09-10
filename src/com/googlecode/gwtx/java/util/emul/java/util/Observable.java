@@ -22,15 +22,18 @@
 
 package java.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Observable is used to notify a group of Observer objects when a change
  * occurs.
  */
 public class Observable {
 
-    List<Observer> observers = new ArrayList<Observer>();
+    private List<Observer> observers = new ArrayList<Observer>();
 
-    boolean changed = false;
+    private boolean changed = false;
 
     /**
      * Constructs a new Observable object.
@@ -41,7 +44,7 @@ public class Observable {
 
     /**
      * Adds the specified Observer to the list of observers.
-     * 
+     *
      * @param observer
      *            the Observer to add
      */
@@ -66,7 +69,7 @@ public class Observable {
 
     /**
      * Answers the number of Observers in the list of observers.
-     * 
+     *
      * @return the number of observers
      */
     public int countObservers() {
@@ -75,7 +78,7 @@ public class Observable {
 
     /**
      * Removes the specified Observer from the list of observers.
-     * 
+     *
      * @param observer
      *            the Observer to remove
      */
@@ -92,7 +95,7 @@ public class Observable {
 
     /**
      * Answers the changed flag for this Observable.
-     * 
+     *
      * @return true when the changed flag for this Observable is set, false
      *         otherwise
      */
@@ -105,7 +108,7 @@ public class Observable {
      * <code>update()</code> method for every Observer in the list of
      * observers using null as the argument. Afterwards calls
      * <code>clearChanged()</code>.
-     * 
+     *
      * Equivalent to calling <code>notifyObservers(null)</code>
      */
     public void notifyObservers() {
@@ -117,7 +120,7 @@ public class Observable {
      * <code>update()</code> method for every Observer in the list of
      * observers using the specified argument. Afterwards calls
      * <code>clearChanged()</code>.
-     * 
+     *
      * @param data
      *            the argument passed to update()
      */

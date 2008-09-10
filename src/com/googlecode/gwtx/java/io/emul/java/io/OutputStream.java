@@ -45,7 +45,7 @@ public abstract class OutputStream implements Closeable, Flushable {
      * @throws IOException
      *             If an error occurs attempting to close this OutputStream.
      */
-    public void close() throws IOException {
+    public void close() throws java.io.IOException {
         /* empty */
     }
 
@@ -57,7 +57,7 @@ public abstract class OutputStream implements Closeable, Flushable {
      * @throws IOException
      *             If an error occurs attempting to flush this OutputStream.
      */
-    public void flush() throws IOException {
+    public void flush() throws java.io.IOException {
         /* empty */
     }
 
@@ -71,7 +71,7 @@ public abstract class OutputStream implements Closeable, Flushable {
      * @throws IOException
      *             If an error occurs attempting to write to this OutputStream.
      */
-    public void write(byte buffer[]) throws IOException {
+    public void write(byte buffer[]) throws java.io.IOException {
         write(buffer, 0, buffer.length);
     }
 
@@ -92,7 +92,7 @@ public abstract class OutputStream implements Closeable, Flushable {
      * @throws IndexOutOfBoundsException
      *             If offset or count are outside of bounds.
      */
-    public void write(byte buffer[], int offset, int count) throws IOException {
+    public void write(byte buffer[], int offset, int count) throws java.io.IOException {
         // avoid int overflow, check null buffer
         if (offset > buffer.length || offset < 0 || count < 0
                 || count > buffer.length - offset) {
@@ -113,5 +113,5 @@ public abstract class OutputStream implements Closeable, Flushable {
      * @throws IOException
      *             If an error occurs attempting to write to this OutputStream.
      */
-    public abstract void write(int oneByte) throws IOException;
+    public abstract void write(int oneByte) throws java.io.IOException;
 }

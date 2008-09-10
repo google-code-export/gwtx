@@ -185,7 +185,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      * @throws IOException
      *             If any IOException raises during the procedure.
      */
-    public Writer append(char c) throws IOException {
+    public Writer append(char c) throws java.io.IOException {
         write(c);
         return this;
     }
@@ -202,7 +202,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      * @throws IOException
      *             If any IOException raises during the procedure.
      */
-    public Writer append(CharSequence csq) throws IOException {
+    public Writer append(CharSequence csq) throws java.io.IOException {
         if (null == csq) {
             write(TOKEN_NULL);
         } else {
@@ -235,7 +235,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      *             If any IOException raises during the procedure.
      */
     public Writer append(CharSequence csq, int start, int end)
-            throws IOException {
+            throws java.io.IOException {
         if (null == csq) {
             write(TOKEN_NULL.substring(start, end));
         } else {

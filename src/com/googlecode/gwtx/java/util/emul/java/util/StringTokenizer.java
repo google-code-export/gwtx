@@ -22,12 +22,15 @@
 
 package java.util;
 
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+
 /**
  * String tokenizer is used to break a string apart into tokens.
- * 
+ *
  * If returnDelimiters is false, successive calls to nextToken() return maximal
  * blocks of characters that do not contain a delimiter.
- * 
+ *
  * If returnDelimiters is true, delimiters are considered to be tokens, and
  * successive calls to nextToken() return either a one character delimiter, or a
  * maximal block of text between delimiters.
@@ -45,7 +48,7 @@ public class StringTokenizer implements Enumeration<Object> {
     /**
      * Constructs a new StringTokenizer for string using whitespace as the
      * delimiter, returnDelimiters is false.
-     * 
+     *
      * @param string
      *            the string to be tokenized
      */
@@ -56,7 +59,7 @@ public class StringTokenizer implements Enumeration<Object> {
     /**
      * Constructs a new StringTokenizer for string using the specified
      * delimiters, returnDelimiters is false.
-     * 
+     *
      * @param string
      *            the string to be tokenized
      * @param delimiters
@@ -69,7 +72,7 @@ public class StringTokenizer implements Enumeration<Object> {
     /**
      * Constructs a new StringTokenizer for string using the specified
      * delimiters and returning delimiters as tokens when specified.
-     * 
+     *
      * @param string
      *            the string to be tokenized
      * @param delimiters
@@ -90,7 +93,7 @@ public class StringTokenizer implements Enumeration<Object> {
 
     /**
      * Returns the number of unprocessed tokens remaining in the string.
-     * 
+     *
      * @return number of tokens that can be retreived before an exception will
      *         result
      */
@@ -116,7 +119,7 @@ public class StringTokenizer implements Enumeration<Object> {
 
     /**
      * Returns true if unprocessed tokens remain.
-     * 
+     *
      * @return true if unprocessed tokens remain
      */
     public boolean hasMoreElements() {
@@ -125,7 +128,7 @@ public class StringTokenizer implements Enumeration<Object> {
 
     /**
      * Returns true if unprocessed tokens remain.
-     * 
+     *
      * @return true if unprocessed tokens remain
      */
     public boolean hasMoreTokens() {
@@ -145,7 +148,7 @@ public class StringTokenizer implements Enumeration<Object> {
 
     /**
      * Returns the next token in the string as an Object.
-     * 
+     *
      * @return next token in the string as an Object
      * @exception NoSuchElementException
      *                if no tokens remain
@@ -156,7 +159,7 @@ public class StringTokenizer implements Enumeration<Object> {
 
     /**
      * Returns the next token in the string as a String.
-     * 
+     *
      * @return next token in the string as a String
      * @exception NoSuchElementException
      *                if no tokens remain
@@ -191,7 +194,7 @@ public class StringTokenizer implements Enumeration<Object> {
     /**
      * Returns the next token in the string as a String. The delimiters used are
      * changed to the specified delimiters.
-     * 
+     *
      * @param delims
      *            the new delimiters to use
      * @return next token in the string as a String
