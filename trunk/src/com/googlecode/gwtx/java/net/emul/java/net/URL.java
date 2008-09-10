@@ -24,7 +24,7 @@ package java.net;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 /**
@@ -101,7 +101,7 @@ public final class URL implements java.io.Serializable {
     /**
      * Cache for storing protocol handler
      */
-    private static Hashtable<String, URLStreamHandler> streamHandlers = new Hashtable<String, URLStreamHandler>();
+    private static HashMap<String, URLStreamHandler> streamHandlers = new HashMap<String, URLStreamHandler>();
 
     /**
      * The URL Stream (protocol) Handler

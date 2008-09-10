@@ -124,7 +124,12 @@ public class InetAddress extends Object implements Serializable {
      * @return byte[] the address as a byte array
      */
     public byte[] getAddress() {
-        return ipaddress.clone();
+        byte[] clone = new byte[ipaddress.length];
+        for ( int i = 0; i < ipaddress.length; i++ )
+        {
+            clone[i] = ipaddress[i];
+        }
+        return clone;
     }
 
     /**

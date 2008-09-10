@@ -38,5 +38,5 @@ public interface Flushable {
      * @throws IOException
      *             if there are any issues writing the data.
      */
-    void flush() throws IOException;
+    void flush() throws java.io.IOException;
 }

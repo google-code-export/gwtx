@@ -56,9 +56,9 @@ public abstract class URLStreamHandler {
             throw new StringIndexOutOfBoundsException(end - 2 - start);
         }
         if (end < start) {
-            if (this != u.strmHandler) {
-                throw new SecurityException();
-            }
+//            if (this != u.strmHandler) {
+//                throw new SecurityException();
+//            }
             return;
         }
         String parseString = ""; //$NON-NLS-1$
@@ -224,9 +224,9 @@ public abstract class URLStreamHandler {
     @Deprecated
     protected void setURL(URL u, String protocol, String host, int port,
             String file, String ref) {
-        if (this != u.strmHandler) {
-            throw new SecurityException();
-        }
+//        if (this != u.strmHandler) {
+//            throw new SecurityException();
+//        }
         u.set(protocol, host, port, file, ref);
     }
 
@@ -257,9 +257,9 @@ public abstract class URLStreamHandler {
     protected void setURL(URL u, String protocol, String host, int port,
             String authority, String userInfo, String file, String query,
             String ref) {
-        if (this != u.strmHandler) {
-            throw new SecurityException();
-        }
+//        if (this != u.strmHandler) {
+//            throw new SecurityException();
+//        }
         u.set(protocol, host, port, authority, userInfo, file, query, ref);
     }
 
@@ -346,14 +346,8 @@ public abstract class URLStreamHandler {
      *         <code>false</code> if the hosts are different
      */
     protected boolean hostsEqual(URL url1, URL url2) {
-        String host1 = getHost(url1), host2 = getHost(url2);
+        String host1 = url1.getHost(), host2 = url2.getHost();
         if (host1 == host2 || (host1 != null && host1.equalsIgnoreCase(host2))) {
-            return true;
-        }
-        // Compare host address if the host name is not equal.
-        InetAddress address1 = getHostAddress(url1);
-        InetAddress address2 = getHostAddress(url2);
-        if (address1 != null && address1.equals(address2)) {
             return true;
         }
         return false;
@@ -405,7 +399,7 @@ final class URLUtil {
      * @param path the path to be canonicalized
      * @return the canonicalized path
      */
-    private static String canonicalizePath(String path) {
+    public static String canonicalizePath(String path) {
         int dirIndex;
 
         while ((dirIndex = path.indexOf("/./")) >= 0) { //$NON-NLS-1$

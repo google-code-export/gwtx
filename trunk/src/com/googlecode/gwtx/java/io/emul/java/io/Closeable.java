@@ -34,5 +34,5 @@ public interface Closeable {
      * @throws IOException
      *             if any error raises when closing the object.
      */
-    public void close() throws IOException;
+    public void close() throws java.io.IOException;
 }

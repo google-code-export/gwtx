@@ -77,8 +77,9 @@ class URIEncoderDecoder {
             }
             if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
                     || (ch >= '0' && ch <= '9') || legal.indexOf(ch) > -1 || (ch > 127
-                    && !Character.isSpaceChar(ch) && !Character
-                    .isISOControl(ch)))) {
+                    && !Character.isSpace(ch)
+                    && !isISOControl(ch)
+                    ))) {
                 throw new URISyntaxException(s, "Illegal character", i); //$NON-NLS-1$
             }
             i++;
@@ -126,11 +127,13 @@ class URIEncoderDecoder {
                     || (ch >= 'A' && ch <= 'Z')
                     || (ch >= '0' && ch <= '9')
                     || legal.indexOf(ch) > -1
-                    || (ch > 127 && !Character.isSpaceChar(ch) && !Character
-                            .isISOControl(ch))) {
+                    || (ch > 127 && !Character.isSpace(ch)
+                        && !isISOControl(ch))) {
                 buf.append(ch);
             } else {
-                byte[] bytes = new String(new char[] { ch }).getBytes(encoding);
+                // byte[] bytes = new String(new char[] { ch }).getBytes(encoding);
+                byte[] bytes = new byte[1];
+                bytes[0] = (byte)ch;
                 for (int j = 0; j < bytes.length; j++) {
                     buf.append('%');
                     buf.append(digits.charAt((bytes[j] & 0xf0) >> 4));
@@ -162,7 +165,9 @@ class URIEncoderDecoder {
             if (ch <= 127) {
                 buf.append(ch);
             } else {
-                byte[] bytes = new String(new char[] { ch }).getBytes(encoding);
+                // byte[] bytes = new String(new char[] { ch }).getBytes(encoding);
+                byte[] bytes = new byte[1];
+                bytes[0] = (byte)ch;
                 for (int j = 0; j < bytes.length; j++) {
                     buf.append('%');
                     buf.append(digits.charAt((bytes[j] & 0xf0) >> 4));
@@ -222,4 +227,9 @@ class URIEncoderDecoder {
         return result.toString();
     }
 
+    private static final boolean isISOControl(char ch) {
+        int codePoint = (int) ch;
+        return (codePoint >= 0x0000 && codePoint <= 0x001F) ||
+            (codePoint >= 0x007F && codePoint <= 0x009F);
+    }
 }
