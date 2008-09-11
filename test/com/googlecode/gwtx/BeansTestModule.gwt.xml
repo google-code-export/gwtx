@@ -18,5 +18,5 @@
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="com.googlecode.gwtx.java.Beans"/>
     <entry-point class='com.googlecode.gwtx.client.Application'/>
-    <source path='client'/>
+    <source path='beans'/>
 </module>

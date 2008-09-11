@@ -1,7 +1,10 @@
-package com.googlecode.gwtx.client;
+package com.googlecode.gwtx.beans;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
 
 /**
  * @author ndeloof
@@ -9,7 +12,7 @@ import java.beans.PropertyChangeSupport;
  */
 public class MyBean
 {
-    PropertyChangeSupport beanSupport = new PropertyChangeSupport( this );
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport( this );
 
     /**
      * @param listener
@@ -17,7 +20,7 @@ public class MyBean
      */
     public void addPropertyChangeListener( PropertyChangeListener listener )
     {
-        beanSupport.addPropertyChangeListener( listener );
+        changeSupport.addPropertyChangeListener( listener );
     }
 
     /**
@@ -27,7 +30,7 @@ public class MyBean
      */
     public void addPropertyChangeListener( String propertyName, PropertyChangeListener listener )
     {
-        beanSupport.addPropertyChangeListener( propertyName, listener );
+        changeSupport.addPropertyChangeListener( propertyName, listener );
     }
 
     private String data;
@@ -43,9 +46,9 @@ public class MyBean
     /**
      * @param data the data to set
      */
-    public void setData( String data )
+    public void setData( String data ) throws PropertyVetoException
     {
-        beanSupport.firePropertyChange( "data", this.data, data );
+        changeSupport.firePropertyChange( "data", this.data, data );
         this.data = data;
     }
 }
