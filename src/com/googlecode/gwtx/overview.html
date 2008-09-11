@@ -11,11 +11,25 @@
     -->
 </p>
 <p>
-    You can import the entire GWTx project by adding the following import to your .gwt.xml file:
+    You can import the entire GWTx Java emultation by adding the following import to your .gwt.xml file:
 </p>
 <blockquote>
     <code>
         &lt;inherits name="com.googlecode.gwtx.Java"/&gt;
+    </code>
+</blockquote>
+<p>
+    Additionnaly, GWTx provide support for some Java extension API, including :
+    <ul>
+        <li>partial emulation of the <tt>javax.annotation</tt> (aka JSR 250 : Common Annotations for the Java Platform)
+        package, including <tt>javax.annotation.security</tt>,</li>
+        <li>the <tt>javax.persistence</tt> (aka JPA or EJB 3.0) API classes</li>
+    </ul>
+    You can import the entire GWTx Javax emultation by adding the following import to your .gwt.xml file:
+</p>
+<blockquote>
+    <code>
+        &lt;inherits name="com.googlecode.gwtx.Javax"/&gt;
     </code>
 </blockquote>
 </body>
