@@ -1,4 +1,4 @@
-package com.googlecode.gwtx.client;
+package com.googlecode.gwtx.beans;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

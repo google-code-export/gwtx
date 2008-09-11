@@ -1,6 +1,7 @@
-package com.googlecode.gwtx.client;
+package com.googlecode.gwtx.beans;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -8,7 +9,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @author ndeloof
  *
  */
-public class IntegrationGwtTest
+public class BeansGwtTest
     extends GWTTestCase
 {
 
@@ -19,7 +20,7 @@ public class IntegrationGwtTest
     @Override
     public String getModuleName()
     {
-        return "com.googlecode.gwtx.TestModule";
+        return "com.googlecode.gwtx.BeansTestModule";
     }
 
     public void testBeans()

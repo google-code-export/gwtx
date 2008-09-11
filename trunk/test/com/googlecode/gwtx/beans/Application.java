@@ -1,4 +1,4 @@
-package com.googlecode.gwtx.client;
+package com.googlecode.gwtx.beans;
 
 import com.google.gwt.core.client.EntryPoint;
 
