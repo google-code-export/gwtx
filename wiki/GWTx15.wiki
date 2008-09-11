@@ -1,6 +1,4 @@
 #labels 1.5,roadmap
-#GWTx for GWT 1.5.
-
 http://gwtx.googlecode.com/svn/wiki/gwtx.png
 
 = Introduction =
@@ -12,6 +10,21 @@ The current development release (SVN trunk) of GWTx focus on GWT 1.5 and Java5 c
   * Fix all compatibility issues with GWT 1.5
   * Update emulation code based on Apache Harmony code base
   * Investigate new java APIs to emulate
+
+= New APIs =
+
+GWTx 1.5 add support for:
+
+  * java.lang.Appendable
+  * javax.annotation, including javax.annotation.secutiry
+  * javax.persistence
+
+The two last one are usefull for Spring / JPA users that want to re-use the domain model beans on the client side.
+
+= Deprecations =
+
+The java.util.logging emulation has been removed. Logging has better support from the [http://code.google.com/p/gwt-log gwt-log] project and it's contribution to [http://code.google.com/p/google-web-toolkit-incubator/wiki/Logging GWT Logging API] in gwt-incubator.
+
 
 = Versions =
 
