@@ -14,6 +14,27 @@ public class MyBean
 {
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport( this );
 
+    private VetoableChangeSupport vetoableSupport = new VetoableChangeSupport( this );
+
+    /**
+     * @param propertyName
+     * @param listener
+     * @see java.beans.VetoableChangeSupport#addVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)
+     */
+    public void addVetoableChangeListener( String propertyName, VetoableChangeListener listener )
+    {
+        vetoableSupport.addVetoableChangeListener( propertyName, listener );
+    }
+
+    /**
+     * @param listener
+     * @see java.beans.VetoableChangeSupport#addVetoableChangeListener(java.beans.VetoableChangeListener)
+     */
+    public void addVetoableChangeListener( VetoableChangeListener listener )
+    {
+        vetoableSupport.addVetoableChangeListener( listener );
+    }
+
     /**
      * @param listener
      * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
@@ -49,6 +70,7 @@ public class MyBean
     public void setData( String data ) throws PropertyVetoException
     {
         changeSupport.firePropertyChange( "data", this.data, data );
+        vetoableSupport.fireVetoableChange( "data", this.data, data );
         this.data = data;
     }
 }
