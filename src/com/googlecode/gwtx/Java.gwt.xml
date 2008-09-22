@@ -19,5 +19,5 @@
     <inherits name="com.googlecode.gwtx.java.Io"/>
     <inherits name="com.googlecode.gwtx.java.Util"/>
     <inherits name="com.googlecode.gwtx.java.Net"/>
-    <inherits name="com.googlecode.gwtx.java.Lang"/>
+    <inherits name="com.googlecode.gwtx.java.Introspection"/>
 </module>

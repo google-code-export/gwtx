@@ -191,7 +191,7 @@ public class PropertyChangeSupport implements Serializable {
         return result.toArray(new PropertyChangeListener[0]);
     }
 
-//    private void writeObject(ObjectOutputStream oos) throws IOException {
+//    private void writeObject(ObjectOutputStream oos) throws java.io.IOException {
 //        oos.defaultWriteObject();
 //        PropertyChangeListener[] gListeners = globalListeners
 //                .toArray(new PropertyChangeListener[0]);
@@ -205,7 +205,7 @@ public class PropertyChangeSupport implements Serializable {
 //
 //    }
 //
-//    private void readObject(ObjectInputStream ois) throws IOException,
+//    private void readObject(ObjectInputStream ois) throws java.io.IOException,
 //            ClassNotFoundException {
 //        ois.defaultReadObject();
 //        this.globalListeners = new LinkedList<PropertyChangeListener>();

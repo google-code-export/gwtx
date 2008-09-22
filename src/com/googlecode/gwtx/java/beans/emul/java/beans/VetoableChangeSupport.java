@@ -131,7 +131,7 @@ public class VetoableChangeSupport implements Serializable {
                 .toArray(new VetoableChangeListener[result.size()]));
     }
 
-//    private void writeObject(ObjectOutputStream oos) throws IOException {
+//    private void writeObject(ObjectOutputStream oos) throws java.io.IOException {
 //        oos.defaultWriteObject();
 //        VetoableChangeListener[] copy = new VetoableChangeListener[globalListeners
 //                .size()];
@@ -146,7 +146,7 @@ public class VetoableChangeSupport implements Serializable {
 //
 //    }
 //
-//    private void readObject(ObjectInputStream ois) throws IOException,
+//    private void readObject(ObjectInputStream ois) throws java.io.IOException,
 //            ClassNotFoundException {
 //        ois.defaultReadObject();
 //        this.globalListeners = new ArrayList<VetoableChangeListener>();
