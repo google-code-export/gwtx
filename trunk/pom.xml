@@ -89,6 +89,7 @@
           <source>1.5</source>
           <target>1.5</target>
           <excludes>
+            <exclude>**/client/**/*.java</exclude>
             <exclude>**/emul/**/*.java</exclude>
           </excludes>
         </configuration>
@@ -114,6 +115,16 @@
         </executions>
       </plugin>
     </plugins>
+
+    <extensions>
+      <!-- deploy on googlecode.com via SVN webdav -->
+      <extension>
+          <groupId>org.apache.maven.wagon</groupId>
+          <artifactId>wagon-webdav</artifactId>
+          <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
+
   </build>
 
   <dependencies>
@@ -133,7 +144,7 @@
       <artifactId>gwt-dev</artifactId>
       <version>${gwt.version}</version>
       <classifier>${gwt.variant}</classifier>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -186,5 +197,15 @@
     </pluginRepository>
   </pluginRepositories>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>googlecode</id>
+      <url>dav:https://gwtx.googlecode.com/svn/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>googlecode</id>
+      <url>dav:https://gwtx.googlecode.com/svn/releases</url>
+    </repository>
+  </distributionManagement>
 
 </project>

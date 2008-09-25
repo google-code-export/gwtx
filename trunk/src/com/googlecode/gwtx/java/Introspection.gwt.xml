@@ -16,5 +16,5 @@
  -->
 <module>
     <source path="client"/>
-    <inherits name="com.googlecode.gwtx.java.lang.emul.Emulation"/>
+    <inherits name="com.googlecode.gwtx.java.introspection.emul.Emulation"/>
 </module>

@@ -15,11 +15,31 @@
  *  limitations under the License.
  */
 
-package java.lang.reflect;
-
-import java.lang.reflect.InvocationTargetException;
-
-public abstract class Method
+public class InvocationTargetException
+    extends Exception
 {
-    public abstract Object invoke(Object obj, Object... args);
+    public InvocationTargetException()
+    {
+        super();
+    }
+
+    public InvocationTargetException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public InvocationTargetException( String message )
+    {
+        super( message );
+    }
+
+    public InvocationTargetException( Throwable cause )
+    {
+        super( cause );
+    }
+
+    public Throwable getTargetException()
+    {
+        return getCause();
+    }
 }

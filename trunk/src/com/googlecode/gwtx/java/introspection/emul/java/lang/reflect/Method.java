@@ -15,11 +15,10 @@
  *  limitations under the License.
  */
 
-package java.beans;
+package java.lang.reflect;
 
-
-public interface BeanInfo {
-
-    public PropertyDescriptor[] getPropertyDescriptors();
-
+public abstract class Method
+{
+    public abstract Object invoke(Object obj, Object... args);
+        // throws IllegalAccessException, InvocationTargetException;
 }
