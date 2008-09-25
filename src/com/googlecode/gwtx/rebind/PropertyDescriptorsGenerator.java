@@ -21,6 +21,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,20 +106,17 @@ public class PropertyDescriptorsGenerator
      */
     private void write( TreeLogger logger, SourceWriter w, JClassType type )
     {
-        Map<String, JMethod[]> properties = lookupJavaBeanPropertyAccessors( type );
+        Collection<Property> properties = lookupJavaBeanPropertyAccessors( type );
 
         w.println( "public static void setupBeanInfo()" );
         w.println( "{" );
         w.indent();
         w.println( "GwtBeanInfo beanInfo = new GwtBeanInfo();");
         int i = properties.size();
-        for ( Map.Entry<String, JMethod[]> property : properties.entrySet() )
+        for ( Property property : properties )
         {
-            JMethod getter = property.getValue()[0];
-            JMethod setter = property.getValue()[1];
-            String propertyName = property.getKey();
             w.print( "beanInfo.addPropertyDescriptor( " );
-            writePropertyDescriptor( w, type, propertyName, getter, setter );
+            writePropertyDescriptor( w, type, property.name, property.getter, property.setter );
             w.println( " );" );
         }
         w.println( "GwtIntrospector.setBeanInfo( " + type.getName() + ".class, beanInfo );" );
@@ -127,64 +125,64 @@ public class PropertyDescriptorsGenerator
     }
 
     /**
-     * @param w
+     * @param sw
      * @param type
      * @param propertyName
      * @param getter
      * @param setter
      */
-    private void writePropertyDescriptor( SourceWriter w, JClassType type, String propertyName, JMethod getter,
+    private void writePropertyDescriptor( SourceWriter sw, JClassType type, String propertyName, JMethod getter,
                                           JMethod setter )
     {
-        w.print( "new PropertyDescriptor( \"" + propertyName + "\", " );
+        sw.print( "new PropertyDescriptor( \"" + propertyName + "\", " );
         if ( getter != null )
         {
-            w.println( "new Method() " );
-            w.println( "{" );
-            w.indent();
-            w.println( "public Object invoke( Object bean, Object... args )" );
-            w.println( "{" );
-            w.indent();
-            w.println( "return ( (" + type.getName() + ") bean)." + getter.getName() + "();" );
-            w.outdent();
-            w.println( "}" );
-            w.outdent();
-            w.print( "}, " );
+            sw.println( "new Method() " );
+            sw.println( "{" );
+            sw.indent();
+            sw.println( "public Object invoke( Object bean, Object... args )" );
+            sw.println( "{" );
+            sw.indent();
+            sw.println( "return ( (" + type.getName() + ") bean)." + getter.getName() + "();" );
+            sw.outdent();
+            sw.println( "}" );
+            sw.outdent();
+            sw.print( "}, " );
         }
         else
         {
-            w.print( "null, " );
+            sw.print( "null, " );
         }
         if ( setter != null )
         {
-            w.println( "new Method() " );
-            w.println( "{" );
-            w.indent();
-            w.println( "public Object invoke( Object bean, Object... args )" );
-            w.println( "{" );
-            w.indent();
+            sw.println( "new Method() " );
+            sw.println( "{" );
+            sw.indent();
+            sw.println( "public Object invoke( Object bean, Object... args )" );
+            sw.println( "{" );
+            sw.indent();
             JType argType = setter.getParameters()[0].getType();
-            w.println( "( (" + type.getName() + ") bean)." + setter.getName() + "( (" + argType.getQualifiedSourceName() + ") args[0] );" );
-            w.println( "return null" );
-            w.outdent();
-            w.println( "}" );
-            w.outdent();
-            w.print( "} )" );
+            sw.println( "( (" + type.getName() + ") bean)." + setter.getName() + "( (" + argType.getQualifiedSourceName() + ") args[0] );" );
+            sw.println( "return null" );
+            sw.outdent();
+            sw.println( "}" );
+            sw.outdent();
+            sw.print( "} )" );
         }
         else
         {
-            w.print( "null )" );
+            sw.print( "null )" );
         }
     }
 
     /**
      * Lookup any public method in the type to match JavaBeans accessor convention
      * @param type
-     * @return Map of javabean properties, associated to JMethod[getter,setter]
+     * @return Collection of javabean properties
      */
-    protected Map<String, JMethod[]> lookupJavaBeanPropertyAccessors( JClassType type )
+    protected Collection<Property> lookupJavaBeanPropertyAccessors( JClassType type )
     {
-        Map<String, JMethod[]> properties = new HashMap<String, JMethod[]>();
+        Map<String, Property> properties = new HashMap<String, Property>();
 
         JMethod[] methods = type.getMethods();
         for ( JMethod method : methods )
@@ -195,38 +193,51 @@ public class PropertyDescriptorsGenerator
             }
             if ( method.getName().startsWith( "set" ) && method.getParameters().length == 1 )
             {
-                String property = Introspector.decapitalize( method.getName().substring( 3 ) );
-                JMethod[] accessors = properties.get( property );
-                if ( accessors == null )
+                String name = Introspector.decapitalize( method.getName().substring( 3 ) );
+                Property property = properties.get( name );
+                if ( property == null )
                 {
-                    accessors = new JMethod[2];
-                    properties.put( property, accessors );
+                    property = new Property( name );
+                    properties.put( name, property );
                 }
-                accessors[1] = method;
+                property.setter = method;
             }
             else if ( method.getName().startsWith( "get" ) && method.getParameters().length == 0 )
             {
-                String property = Introspector.decapitalize( method.getName().substring( 3 ) );
-                JMethod[] accessors = properties.get( property );
-                if ( accessors == null )
+                String name = Introspector.decapitalize( method.getName().substring( 3 ) );
+                Property property = properties.get( name );
+                if ( property == null )
                 {
-                    accessors = new JMethod[2];
-                    properties.put( property, accessors );
+                    property = new Property( name );
+                    properties.put( name, property );
                 }
-                accessors[0] = method;
+                property.getter = method;
             }
             else if ( method.getName().startsWith( "is" ) && method.getParameters().length == 0 )
             {
-                String property = Introspector.decapitalize( method.getName().substring( 2 ) );
-                JMethod[] accessors = properties.get( property );
-                if ( accessors == null )
+                String name = Introspector.decapitalize( method.getName().substring( 2 ) );
+                Property property = properties.get( name );
+                if ( property == null )
                 {
-                    accessors = new JMethod[2];
-                    properties.put( property, accessors );
+                    property = new Property( name );
+                    properties.put( name, property );
                 }
-                accessors[0] = method;
+                property.getter = method;
             }
         }
-        return properties;
+        return properties.values();
+    }
+
+    private class Property
+    {
+        public String name;
+        public JMethod getter;
+        public JMethod setter;
+
+        public Property( String name )
+        {
+            super();
+            this.name = name;
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- 
+<!--
  *  Licensed to the Apache Software Foundation (ASF) under one or more
  *  contributor license agreements.  See the NOTICE file distributed with
  *  this work for additional information regarding copyright ownership.
@@ -126,16 +126,6 @@
         </jar>
     </target>
 
-    <target name="package-java-util-logging" depends="init" description="Package the java.util.logging package as a jar">
-        <jar destfile="GWTx-java-util-logging-${DSTAMP}.jar">
-            <!-- Get everything; source, modules, html files -->
-            <fileset dir="src">
-                <include name="com/googlecode/gwtx/java/util/Logging.gwt.xml"/>
-                <include name="com/googlecode/gwtx/java/util/logging/**"/>
-            </fileset>
-        </jar>
-    </target>
-
     <target name="javadoc" depends="init" description="Generate Javadocs">
         <property name="javadoc.dir" value="doc/javadoc"/>
         <property name="javadoc.footer" value="${TODAY}"/>
@@ -177,7 +167,7 @@
         <delete dir="tomcat"/>
     </target>
 
-    <target name="all" depends="package,package-java-beans,package-java-io,package-java-util,package-java-util-logging" description="Build all packages."/>
+    <target name="all" depends="package,package-java-beans,package-java-io,package-java-util" description="Build all packages."/>
 
     <target name="gwtcompile-logger-test" depends="init">
         <gwtcompile module="logger.test.TestLogging"/>
