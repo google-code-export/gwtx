@@ -15,9 +15,13 @@ The current development release (SVN trunk) of GWTx focus on GWT 1.5 and Java5 c
 
 GWTx 1.5 add support for:
 
-  * java.lang.Appendable
+  * javaBeans introspection, including limited support for javax.lang.reflect.Method
+
+Also some "entreprise" APIs are now supported
+
   * javax.annotation, including javax.annotation.secutiry
   * javax.persistence
+  * javax.validation
 
 The two last one are usefull for Spring / JPA users that want to re-use the domain model beans on the client side.
 
@@ -25,6 +29,7 @@ The two last one are usefull for Spring / JPA users that want to re-use the doma
 
 The java.util.logging emulation has been removed. Logging has better support from the [http://code.google.com/p/gwt-log gwt-log] project and it's contribution to [http://code.google.com/p/google-web-toolkit-incubator/wiki/Logging GWT Logging API] in gwt-incubator.
 
+java.io and java.net API emulation has also been removed. They were created to support java.util.logging but never became stable enough for large adoption. If you need them, please contact nicolas.deloof_at_gmail.com to get them back in GWTx.
 
 = Versions =
 
