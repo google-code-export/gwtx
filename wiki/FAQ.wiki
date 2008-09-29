@@ -12,7 +12,7 @@ See
 = GWT 1.5 compatibility =
 
 Q: Is GWTx compatible with GWT 1.5 ?
-A: The 1.5.x development branch focus on GWT 1.5 compatibility. Future releases of GWTx will include in version scheme the GWT version it is related to.
+A: The SVN development branch focus on GWT 1.5 compatibility. Releases of GWTx now include in version scheme the GWT version it is related to.
 
 = java.io.Serializable (GWTx for GWT 1.3)  =
 
