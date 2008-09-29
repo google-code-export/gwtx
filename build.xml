@@ -88,7 +88,7 @@
     </target>
 
     <target name="package" depends="init" description="Package the whole project as a jar">
-        <jar destfile="GWTx-${DSTAMP}.jar">
+        <jar destfile="GWTx-1.5.${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="**"/>
@@ -97,7 +97,7 @@
     </target>
 
     <target name="package-java-beans" depends="init" description="Package the java.beans package as a jar">
-        <jar destfile="GWTx-java-beans-${DSTAMP}.jar">
+        <jar destfile="GWTx-java-beans-1.5.${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Beans.gwt.xml"/>
@@ -107,7 +107,7 @@
     </target>
 
     <target name="package-java-io" depends="init" description="Package the java.io package as a jar">
-        <jar destfile="GWTx-java-io-${DSTAMP}.jar">
+        <jar destfile="GWTx-java-io-1.5.${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Io.gwt.xml"/>
@@ -117,7 +117,7 @@
     </target>
 
     <target name="package-java-util" depends="init" description="Package the java.util package as a jar">
-        <jar destfile="GWTx-java-util-${DSTAMP}.jar">
+        <jar destfile="GWTx-java-util-1.5.${DSTAMP}.jar">
             <!-- Get everything; source, modules, html files -->
             <fileset dir="src">
                 <include name="com/googlecode/gwtx/java/Util.gwt.xml"/>
