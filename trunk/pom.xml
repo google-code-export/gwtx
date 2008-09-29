@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.code.gwtx</groupId>
   <artifactId>gwtx</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <name>gwtx</name>
   <description>
     The goal of GWTx is to provide drop in support for an extended
@@ -116,15 +116,6 @@
       </plugin>
     </plugins>
 
-    <extensions>
-      <!-- deploy on googlecode.com via SVN webdav -->
-      <extension>
-          <groupId>org.apache.maven.wagon</groupId>
-          <artifactId>wagon-webdav</artifactId>
-          <version>1.0-beta-2</version>
-      </extension>
-    </extensions>
-
   </build>
 
   <dependencies>
@@ -199,12 +190,12 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>googlecode</id>
-      <url>dav:https://gwtx.googlecode.com/svn/snapshots</url>
+      <id>people.apache.org</id>
+      <url>scp://people.apache.org/home/nicolas/public_html/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>googlecode</id>
-      <url>dav:https://gwtx.googlecode.com/svn/releases</url>
+      <id>people.apache.org</id>
+      <url>scp://people.apache.org/home/nicolas/rsync-to-central/</url>
     </repository>
   </distributionManagement>
 
