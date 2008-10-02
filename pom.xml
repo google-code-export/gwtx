@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.code.gwtx</groupId>
   <artifactId>gwtx</artifactId>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.5-20080929</version>
   <name>gwtx</name>
   <description>
     The goal of GWTx is to provide drop in support for an extended
@@ -69,6 +69,13 @@
           <include>**/emul/**/*.java</include>
           <include>**/client/**/*.java</include>
           <include>**/*.gwt.xml</include>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>target/generated-sources/gwt</directory>
+        <includes>
+          <include>**/*.java</include>
         </includes>
       </resource>
     </resources>
@@ -110,9 +117,14 @@
           <execution>
             <goals>
               <goal>test</goal>
+              <goal>i18n</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+           <resourceBundle>com.googlecode.gwtx.java.text.client.Locale</resourceBundle>
+           <message>true</message>
+        </configuration>
       </plugin>
     </plugins>
 

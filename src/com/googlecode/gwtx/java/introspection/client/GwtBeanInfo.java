@@ -15,34 +15,37 @@
  *  limitations under the License.
  */
 
-package java.lang.reflect;
+package com.googlecode.gwtx.java.introspection.client;
 
+import java.beans.BeanInfo;
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
 
-public class InvocationTargetException
-    extends Exception
+/**
+ * @author ndeloof
+ *
+ */
+public class GwtBeanInfo implements BeanInfo
 {
-    public InvocationTargetException()
+
+    private List<PropertyDescriptor> descriptors;
+
+    /**
+     * {@inheritDoc}
+     * @see java.beans.BeanInfo#getPropertyDescriptors()
+     */
+    public PropertyDescriptor[] getPropertyDescriptors()
     {
-        super();
+        return descriptors.toArray( new PropertyDescriptor[ descriptors.size() ] );
     }
 
-    public InvocationTargetException( String message, Throwable cause )
+    public void addPropertyDescriptor( PropertyDescriptor descriptor )
     {
-        super( message, cause );
-    }
-
-    public InvocationTargetException( String message )
-    {
-        super( message );
-    }
-
-    public InvocationTargetException( Throwable cause )
-    {
-        super( cause );
-    }
-
-    public Throwable getTargetException()
-    {
-        return getCause();
+        if (descriptors == null)
+        {
+            descriptors = new ArrayList<PropertyDescriptor>();
+        }
+        descriptors.add( descriptor );
     }
 }

@@ -16,6 +16,5 @@
  -->
 <module>
     <inherits name="com.googlecode.gwtx.java.Util"/>
-    <inherits name="com.googlecode.gwtx.java.Introspection"/>
     <inherits name="com.googlecode.gwtx.java.beans.emul.Emulation"/>
 </module>

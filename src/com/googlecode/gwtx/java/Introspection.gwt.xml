@@ -15,6 +15,5 @@
  *  limitations under the License.
  -->
 <module>
-    <source path="client"/>
-    <inherits name="com.googlecode.gwtx.java.introspection.emul.Emulation"/>
+    <inherits name="com.googlecode.gwtx.java.introspection.Introspection"/>
 </module>
