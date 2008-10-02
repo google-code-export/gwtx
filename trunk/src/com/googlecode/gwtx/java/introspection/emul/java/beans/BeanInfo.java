@@ -17,8 +17,6 @@
 
 package java.beans;
 
-import com.googlecode.gwtx.java.beans.emul.java.beans.PropertyDescriptor;
-
 
 public interface BeanInfo {
 

@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package com.googlecode.gwtx.java.client;
+package com.googlecode.gwtx.java.introspection.client;
 
 import java.util.HashMap;
 import java.util.Map;

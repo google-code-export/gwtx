@@ -21,7 +21,9 @@ import java.beans.BeanInfo;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Introspector extends com.googlecode.gwtx.java.introspection.GwtIntrospector {
+import com.googlecode.gwtx.java.introspection.client.GwtIntrospector;
+
+public class Introspector extends GwtIntrospector {
 
     private Introspector() {
         super();
