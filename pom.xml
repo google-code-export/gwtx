@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.code.gwtx</groupId>
   <artifactId>gwtx</artifactId>
-  <version>1.5-20080929</version>
+  <version>1.5-20081003</version>
   <name>gwtx</name>
   <description>
     The goal of GWTx is to provide drop in support for an extended
@@ -107,23 +107,6 @@
           <excludes>
             <exclude>**/*GwtTest.java</exclude>
           </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test</goal>
-              <goal>i18n</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-           <resourceBundle>com.googlecode.gwtx.java.text.client.Locale</resourceBundle>
-           <message>true</message>
         </configuration>
       </plugin>
     </plugins>
