@@ -17,9 +17,8 @@
 package java.text;
 
 import java.io.Serializable;
-import java.text.FieldPosition;
 
-public class Format implements Serializable
+public abstract class Format implements Serializable
 {
     public abstract String format (Object obj);
 }
