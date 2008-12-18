@@ -22,22 +22,29 @@ import java.lang.reflect.Method;
 
 public class PropertyDescriptor
 {
-
     private Method getter;
 
     private Method setter;
 
     private String name;
+	
+	private Class<?> propertyType;
 
-    public PropertyDescriptor( String propertyName, Method getter, Method setter )
+    public PropertyDescriptor( String propertyName, Class<?> propertyType, Method getter, Method setter )
         throws IntrospectionException
     {
         super();
         this.name = propertyName;
+		this.propertyType = propertyType;
         this.getter = getter;
         this.setter = setter;
     }
 
+	public Class<?> getPropertyType() 
+	{
+		return propertyType;
+	}
+		
     public Method getWriteMethod()
     {
         return setter;

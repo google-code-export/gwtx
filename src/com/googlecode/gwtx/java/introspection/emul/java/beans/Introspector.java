@@ -49,6 +49,38 @@ public class Introspector extends GwtIntrospector {
         return __getBeanInfo(beanClass);
     }
 
+/*
+	Based on Harmony code
+	http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/beans/src/main/java/java/beans/Introspector.java
+*/	
+			
+    /**
+     * Decapitalizes a given string according to the rule:
+     * <ul>
+     * <li>If the first or only character is Upper Case, it is made Lower Case
+     * <li>UNLESS the second character is also Upper Case, when the String is
+     * returned unchanged <eul>
+     * 
+     * @param name -
+     *            the String to decapitalize
+     * @return the decapitalized version of the String
+     */
+    public static String decapitalize(String name) {
+
+        if (name == null)
+            return null;
+        // The rule for decapitalize is that:
+        // If the first letter of the string is Upper Case, make it lower case
+        // UNLESS the second letter of the string is also Upper Case, in which case no
+        // changes are made.
+        if (name.length() == 0 || (name.length() > 1 && Character.isUpperCase(name.charAt(1)))) {
+            return name;
+        }
+        
+        char[] chars = name.toCharArray();
+        chars[0] = Character.toLowerCase(chars[0]);
+        return new String(chars);
+    }						
 }
 
 

@@ -93,8 +93,8 @@ public class PropertyDescriptorsGenerator
         composerFactory.addImport( PropertyDescriptor.class.getName() );
         composerFactory.addImport( Method.class.getName() );
         // Do not use GwtBeanInfo.class as the BeanInfo interface is NOT fully implemented
-        composerFactory.addImport( "com.googlecode.gwtx.java.client.GwtBeanInfo" );
-        composerFactory.addImport( "com.googlecode.gwtx.java.client.GwtIntrospector" );
+        composerFactory.addImport( "com.googlecode.gwtx.java.introspection.client.GwtBeanInfo" );
+        composerFactory.addImport( "com.googlecode.gwtx.java.introspection.client.GwtIntrospector" );
 
         return composerFactory.createSourceWriter( context, printWriter );
     }
@@ -108,16 +108,19 @@ public class PropertyDescriptorsGenerator
     {
         Collection<Property> properties = lookupJavaBeanPropertyAccessors( type );
 
-        w.println( "public static void setupBeanInfo()" );
-        w.println( "{" );
+        w.println( "// automatically register BeanInfos for bean properties" );
+        w.println( "static {" );
         w.indent();
         w.println( "GwtBeanInfo beanInfo = new GwtBeanInfo();");
-        int i = properties.size();
         for ( Property property : properties )
         {
+            w.println("try {");
+            w.indent();
             w.print( "beanInfo.addPropertyDescriptor( " );
-            writePropertyDescriptor( w, type, property.name, property.getter, property.setter );
+            writePropertyDescriptor( w, type, property.name, property.propertyType, property.getter, property.setter );
             w.println( " );" );
+            w.outdent();
+            w.println("} catch (Exception e) {}");
         }
         w.println( "GwtIntrospector.setBeanInfo( " + type.getName() + ".class, beanInfo );" );
         w.outdent();
@@ -131,10 +134,10 @@ public class PropertyDescriptorsGenerator
      * @param getter
      * @param setter
      */
-    private void writePropertyDescriptor( SourceWriter sw, JClassType type, String propertyName, JMethod getter,
-                                          JMethod setter )
+    private void writePropertyDescriptor( SourceWriter sw, JClassType type, String propertyName, String propertyType
+	                                      JMethod getter, JMethod setter )
     {
-        sw.print( "new PropertyDescriptor( \"" + propertyName + "\", " );
+        sw.print( "new PropertyDescriptor( \"" + propertyName + "\", " +  propertyType + ".class, " );
         if ( getter != null )
         {
             sw.println( "new Method() " );
@@ -163,7 +166,7 @@ public class PropertyDescriptorsGenerator
             sw.indent();
             JType argType = setter.getParameters()[0].getType();
             sw.println( "( (" + type.getName() + ") bean)." + setter.getName() + "( (" + argType.getQualifiedSourceName() + ") args[0] );" );
-            sw.println( "return null" );
+            sw.println( "return null;" );
             sw.outdent();
             sw.println( "}" );
             sw.outdent();
@@ -194,6 +197,19 @@ public class PropertyDescriptorsGenerator
             if ( method.getName().startsWith( "set" ) && method.getParameters().length == 1 )
             {
                 String name = Introspector.decapitalize( method.getName().substring( 3 ) );
+				String propertyType = null;
+                JParameter[] parameters = method.getParameters();
+                if ( parameters.length == 1 ) 
+				{
+                    JParameter parameter = parameters[0];
+                    propertyType = parameter.getType().getQualifiedSourceName();
+                } 
+				else  
+				{
+                    logger.log( Type.WARN, "Property '" + name + "' has "
+                        + parameters.length + " parameters: " + parameters + "!" );
+                    continue;
+                }
                 Property property = properties.get( name );
                 if ( property == null )
                 {
@@ -201,10 +217,22 @@ public class PropertyDescriptorsGenerator
                     properties.put( name, property );
                 }
                 property.setter = method;
+				if ( property.propertyType == null ) 
+				{
+                    property.propertyType = propertyType;
+                } 
+				else if ( ! property.propertyType.equals( propertyType ) ) 
+				{
+                    logger.log(Type.WARN, "Property '" + name
+                        + "' has an invalid setter: " + propertyType + " was expected, "
+                        + property.propertyType + " found!");
+                    continue;
+                }
             }
             else if ( method.getName().startsWith( "get" ) && method.getParameters().length == 0 )
             {
                 String name = Introspector.decapitalize( method.getName().substring( 3 ) );
+				String propertyType = method.getReturnType().getQualifiedSourceName();
                 Property property = properties.get( name );
                 if ( property == null )
                 {
@@ -212,10 +240,22 @@ public class PropertyDescriptorsGenerator
                     properties.put( name, property );
                 }
                 property.getter = method;
+				if ( property.propertyType == null ) 
+				{
+                    property.propertyType = propertyType;
+                } 
+				else if ( ! property.propertyType.equals( propertyType ) ) 
+				{
+                    logger.log(Type.WARN, "Property '" + name
+                        + "' has an invalid getter: " + propertyType + " was expected, "
+                        + property.propertyType + " found!");
+                    continue;
+                }
             }
             else if ( method.getName().startsWith( "is" ) && method.getParameters().length == 0 )
             {
                 String name = Introspector.decapitalize( method.getName().substring( 2 ) );
+				String propertyType = method.getReturnType().getQualifiedSourceName();
                 Property property = properties.get( name );
                 if ( property == null )
                 {
@@ -223,6 +263,17 @@ public class PropertyDescriptorsGenerator
                     properties.put( name, property );
                 }
                 property.getter = method;
+				if ( property.propertyType == null ) 
+				{
+                    property.propertyType = propertyType;
+                } 
+				else if ( ! property.propertyType.equals( propertyType ) ) 
+				{
+                    logger.log( Type.WARN, "Property '" + name
+                        + "' has an invalid 'is' getter: " + propertyType + " was expected, "
+                        + property.propertyType + " found!");
+                    continue;
+                }				
             }
         }
         return properties.values();
@@ -231,6 +282,7 @@ public class PropertyDescriptorsGenerator
     private class Property
     {
         public String name;
+		public String propertyType;
         public JMethod getter;
         public JMethod setter;
 
