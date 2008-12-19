@@ -15,11 +15,6 @@
  * limitations under the License.
  */
 
-/*
- * Based on GWT-Widget project
- * https://gwt-widget.svn.sourceforge.net/svnroot/gwt-widget/trunk/src/java/org/gwtwidgets/client/util/
- */
-
 package java.text;
 
 import java.util.Date;
