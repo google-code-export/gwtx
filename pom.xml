@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.code.gwtx</groupId>
   <artifactId>gwtx</artifactId>
-  <version>1.5-20081003</version>
+  <version>1.5-20081912</version>
   <name>gwtx</name>
   <description>
     The goal of GWTx is to provide drop in support for an extended
@@ -50,7 +50,7 @@
   </developers>
 
   <properties>
-    <gwt.version>1.5.2</gwt.version>
+    <gwt.version>1.5.3</gwt.version>
   </properties>
 
   <scm>
@@ -61,7 +61,6 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test</testSourceDirectory>
     <resources>
       <resource>
         <directory>src</directory>
@@ -70,12 +69,6 @@
           <include>**/client/**/*.java</include>
           <include>**/*.gwt.xml</include>
           <include>**/*.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>target/generated-sources/gwt</directory>
-        <includes>
-          <include>**/*.java</include>
         </includes>
       </resource>
     </resources>
@@ -101,16 +94,7 @@
           </excludes>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/*GwtTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
     </plugins>
-
   </build>
 
   <dependencies>
@@ -170,24 +154,7 @@
     </profile>
   </profiles>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus.snapshots</id>
-      <url>http://snapshots.repository.codehaus.org/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <distributionManagement>
-    <snapshotRepository>
-      <id>people.apache.org</id>
-      <url>scp://people.apache.org/home/nicolas/public_html/snapshots</url>
-    </snapshotRepository>
     <repository>
       <id>people.apache.org</id>
       <url>scp://people.apache.org/home/nicolas/rsync-to-central/</url>

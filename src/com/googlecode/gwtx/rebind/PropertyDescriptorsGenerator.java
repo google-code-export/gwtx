@@ -12,7 +12,6 @@
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
- *  limitations under the License.
  */
 
 package com.googlecode.gwtx.rebind;
@@ -32,6 +31,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -106,7 +106,7 @@ public class PropertyDescriptorsGenerator
      */
     private void write( TreeLogger logger, SourceWriter w, JClassType type )
     {
-        Collection<Property> properties = lookupJavaBeanPropertyAccessors( type );
+        Collection<Property> properties = lookupJavaBeanPropertyAccessors( logger, type );
 
         w.println( "// automatically register BeanInfos for bean properties" );
         w.println( "static {" );
@@ -134,7 +134,7 @@ public class PropertyDescriptorsGenerator
      * @param getter
      * @param setter
      */
-    private void writePropertyDescriptor( SourceWriter sw, JClassType type, String propertyName, String propertyType
+    private void writePropertyDescriptor( SourceWriter sw, JClassType type, String propertyName, String propertyType,
 	                                      JMethod getter, JMethod setter )
     {
         sw.print( "new PropertyDescriptor( \"" + propertyName + "\", " +  propertyType + ".class, " );
@@ -183,7 +183,7 @@ public class PropertyDescriptorsGenerator
      * @param type
      * @return Collection of javabean properties
      */
-    protected Collection<Property> lookupJavaBeanPropertyAccessors( JClassType type )
+    protected Collection<Property> lookupJavaBeanPropertyAccessors( TreeLogger logger, JClassType type )
     {
         Map<String, Property> properties = new HashMap<String, Property>();
 
