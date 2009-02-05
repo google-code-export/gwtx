@@ -1,0 +1,12 @@
+GWTx-java-io.jar - The java.io part of the GWTx library.
+
+GWTx-java-io.jar contails the java.io emulation provided by the GWTx project.
+
+Dependencies: none
+
+Module XML:
+
+<inherits name="com.googlecode.gwtx.java.Io"/> :
+    This inherits the java.io emulation lib for use in your project.
+
+License: Apache License, Version 2.0

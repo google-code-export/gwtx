@@ -1,0 +1,34 @@
+<html>
+<body>
+<p>
+    This package is a copy of the Bean Validation API   classes from the Agimatec Validation Project.
+    http://agimatec-validation.googlecode.com/svn/trunk/src/main/java/javax/validation
+</p>
+<p>
+    Changes made for GWT compatibility :
+    <ul>
+    <li>
+    The <tt>PatternValidator</tt> class has been modified to use native JavaScript regular expression in replacement
+    for unsupported <tt>java.util.regexp</tt> package.
+    </li>
+    <li>The <tt>ValidationProviderFactory</tt> class has been modified to remove ValidationProvider discovery, that
+    is not available on GWT : The GWT application is reponsible to select a GWT compatible ValidationProvider library
+    and to set it as ValidationProvider during application startup.
+    </li>
+    </ul>
+</p>
+<p>
+    Please note the <tt>@Pattern</tt> annotation support is limited to compatibility between Java and JavaScript
+    regular expression, as explained
+    <a href="http://code.google.com/webtoolkit/documentation/com.google.gwt.doc.DeveloperGuide.Fundamentals.html#JavaRuntimeSupport">here</a>.
+</p>
+<p>
+    You can import the javax.validation emulated classes by adding the following import to your .gwt.xml file:
+</p>
+<blockquote>
+    <code>
+        &lt;inherits name="com.googlecode.gwtx.javax.Persistence"/&gt;
+    </code>
+</blockquote>
+</body>
+</html>
