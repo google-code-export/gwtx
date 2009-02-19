@@ -91,7 +91,7 @@ The [http://mojo.codehaus.org Mojo] project host a GWT plugin that can compile y
     </plugin>
 }}}
 
-This maven plugin has many parameters to tweak the compiler and other tools. Refer to it's [http://mojo.codehaus.org/gwt-maven-plugin official documentation] for more informations.
+This maven plugin has many parameters to tweak the compiler. It can also run the I18n Generators, run a module in hosted mode or launch GwtTests. Refer to it's [http://mojo.codehaus.org/gwt-maven-plugin official documentation] for more informations.
 
 = Setup your IDE =
 
