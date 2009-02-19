@@ -1,0 +1,94 @@
+#Using GWT with Maven
+
+= Introduction =
+
+Apache Maven can be used to setup your GWT project and support the Java to JavaScript compilation process.  
+
+
+= Dependencies =
+
+First of all, your Maven project must declare dependencies on the GWT binaries for compilation. According to the GWT version you want to use, add the following dependencies to your pom.xml :
+
+{{{
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwt.version}</version>
+      <classifier>${gwt.variant}</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <version>${gwt.version}</version>
+    </dependency>
+}}}
+
+Configure gwt.version and gwt.variant to match your environment. To be OS agnostic, you can use profiles to detect the gwt.variant to be used :
+
+{{{
+  <profiles>
+    <profile>
+      <id>windows</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <gwt.variant>windows</gwt.variant>
+      </properties>
+    </profile>
+    <profile>
+      <id>mac</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <gwt.variant>mac</gwt.variant>
+      </properties>
+    </profile>
+    <profile>
+      <id>linux</id>
+      <activation>
+        <os>
+          <name>linux</name>
+        </os>
+      </activation>
+      <properties>
+        <gwt.variant>linux</gwt.variant>
+      </properties>
+    </profile>    
+}}}
+
+Now, your project can be used from your favorite IDE to write GWT code based on Maven dependencies.
+
+= Compilation =
+
+The [http://mojo.codehaus.org Mojo] project host a GWT plugin that can compile your GWT code into JavaScript and run other GWT tools. It also includes a code generator to automagically generate GWT-RPC async interfaces for your services.
+
+{{{
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>1.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>generateAsync</goal>
+            </goals>
+          </execution>
+        </executions>
+    </plugin>
+}}}
+
+This maven plugin has many parameters to tweak the compiler and other tools. Refer to it's [http://mojo.codehaus.org/gwt-maven-plugin official documentation] for more informations.
