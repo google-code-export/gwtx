@@ -2,14 +2,14 @@
 
 = Introduction =
 
-Apache Maven can be used to setup your GWT project and support the Java to JavaScript compilation process.  
-
+Apache Maven can be used to setup your GWT project and support the Java to JavaScript compilation process. 
 
 = Dependencies =
 
 First of all, your Maven project must declare dependencies on the GWT binaries for compilation. According to the GWT version you want to use, add the following dependencies to your pom.xml :
 
 {{{
+ <dependencies>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
@@ -28,9 +28,20 @@ First of all, your Maven project must declare dependencies on the GWT binaries f
       <artifactId>gwt-servlet</artifactId>
       <version>${gwt.version}</version>
     </dependency>
+ </dependencies>
 }}}
 
-Configure gwt.version and gwt.variant to match your environment. To be OS agnostic, you can use profiles to detect the gwt.variant to be used :
+Configure gwt.version and gwt.variant to match your environment. 
+
+{{{
+ <properties>
+   <!-- GWT 1.6 MileStone 1 on windows -->
+   <gwt.version>1.6.1</gwt.version>
+   <gwt.variant>windows</gwt.variant>
+ </properties>
+}}}
+
+If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used :
 
 {{{
   <profiles>
@@ -75,6 +86,8 @@ Now, your project can be used from your favorite IDE to write GWT code based on 
 
 The [http://mojo.codehaus.org Mojo] project host a GWT plugin that can compile your GWT code into JavaScript and run other GWT tools. It also includes a code generator to automagically generate GWT-RPC async interfaces for your services.
 
+This plugin is the result of merging the original Mojo plugin with the [http://code.google.com/p/gwt-maven/ gwt-maven] one hosted by googlecode.
+
 {{{
     <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -92,6 +105,9 @@ The [http://mojo.codehaus.org Mojo] project host a GWT plugin that can compile y
 }}}
 
 This maven plugin has many parameters to tweak the compiler. It can also run the I18n Generators, run a module in hosted mode or launch GwtTests. Refer to it's [http://mojo.codehaus.org/gwt-maven-plugin official documentation] for more informations.
+
+Please note the 1.1 version of this plugin is still a SNAPSHOT, you'll need to enable Mojo plugins Snapshot repository as [http://mojo.codehaus.org/using-sandbox-plugins.html explained here].
+
 
 = Setup your IDE =
 
