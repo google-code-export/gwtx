@@ -41,7 +41,7 @@ Configure gwt.version and gwt.variant to match your environment.
  </properties>
 }}}
 
-If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used instead of hard-coding it as <properties> child element :
+If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used instead of hard-coding it as `<properties`> child element :
 
 {{{
   <profiles>
