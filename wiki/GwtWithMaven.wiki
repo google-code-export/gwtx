@@ -41,7 +41,7 @@ Configure gwt.version and gwt.variant to match your environment.
  </properties>
 }}}
 
-If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used :
+If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used instead of hard-coding it as <properties> child element :
 
 {{{
   <profiles>
@@ -111,4 +111,4 @@ Please note the 1.1 version of this plugin is still a SNAPSHOT, you'll need to e
 
 = Setup your IDE =
 
-The gwt-maven plugin can also setup your Eclipse IDE by creating launch configuration for your GWT modules. Just run `mvn gwt:eclipse` and they will be created in your project root (you can them right-clik them to run the hosted browser). 
+The gwt-maven plugin can also setup your Eclipse IDE by creating launch configuration for your GWT modules. Just run `mvn gwt:eclipse` and they will be created in your project root . You can them right-clik them and select "Run as ..." to run the hosted browser. 
