@@ -36,7 +36,7 @@ Configure gwt.version and gwt.variant to match your environment.
 {{{
  <properties>
    <!-- GWT 1.6 MileStone 1 on windows -->
-   <gwt.version>1.6.1</gwt.version>
+   <gwt.version>1.6.0</gwt.version>
    <gwt.variant>windows</gwt.variant>
  </properties>
 }}}
@@ -44,7 +44,14 @@ Configure gwt.version and gwt.variant to match your environment.
 If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used instead of hard-coding it as `<properties`> child element :
 
 {{{
+
+ <properties>
+   <!-- GWT 1.6 MileStone 1 -->
+   <gwt.version>1.6.0</gwt.version>
+ </properties>
+
   <profiles>
+    <!-- detect the adequate GWT variant -->
     <profile>
       <id>windows</id>
       <activation>
