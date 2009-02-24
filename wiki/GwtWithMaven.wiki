@@ -9,6 +9,8 @@ Apache Maven can be used to setup your GWT project and support the Java to JavaS
 First of all, your Maven project must declare dependencies on the GWT binaries for compilation. According to the GWT version you want to use, add the following dependencies to your pom.xml :
 
 {{{
+<project>
+ ...
  <dependencies>
     <dependency>
       <groupId>com.google.gwt</groupId>
@@ -29,28 +31,35 @@ First of all, your Maven project must declare dependencies on the GWT binaries f
       <version>${gwt.version}</version>
     </dependency>
  </dependencies>
+ ...
+</project>
 }}}
 
 Configure gwt.version and gwt.variant to match your environment. 
 
 {{{
+<project>
+ ...
  <properties>
    <!-- GWT 1.6 MileStone 1 on windows -->
    <gwt.version>1.6.0</gwt.version>
    <gwt.variant>windows</gwt.variant>
  </properties>
+ ...
+</project>
 }}}
 
 If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used instead of hard-coding it as `<properties`> child element :
 
 {{{
-
+<project>
+ ...
  <properties>
    <!-- GWT 1.6 MileStone 1 -->
    <gwt.version>1.6.0</gwt.version>
  </properties>
 
-  <profiles>
+ <profiles>
     <!-- detect the adequate GWT variant -->
     <profile>
       <id>windows</id>
@@ -85,6 +94,9 @@ If you want to share your project and to be OS agnostic, you can use profiles to
         <gwt.variant>linux</gwt.variant>
       </properties>
     </profile>    
+  </profiles>
+ ...
+</project>
 }}}
 
 Now, your project can be used from your favorite IDE to write GWT code based on Maven dependencies.
@@ -96,6 +108,10 @@ The [http://mojo.codehaus.org Mojo] project host a GWT plugin that can compile y
 This plugin is the result of merging the original Mojo plugin with the [http://code.google.com/p/gwt-maven/ gwt-maven] one hosted by googlecode.
 
 {{{
+<project>
+...
+ <build>
+  <plugins>
     <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
@@ -109,6 +125,11 @@ This plugin is the result of merging the original Mojo plugin with the [http://c
           </execution>
         </executions>
     </plugin>
+  </plugins>
+ </build>
+ ...
+</project>
+
 }}}
 
 This maven plugin has many parameters to tweak the compiler. It can also run the I18n Generators, run a module in hosted mode or launch GwtTests. Refer to it's [http://mojo.codehaus.org/gwt-maven-plugin official documentation] for more informations.
