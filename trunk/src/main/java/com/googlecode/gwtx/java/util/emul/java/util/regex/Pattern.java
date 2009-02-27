@@ -137,7 +137,7 @@ public class Pattern {
 
   private native void _match(String text, List matches)
   /*-{
-    var regExp = this.@org.gwt.mosaic.core.client.util.regex.Pattern::regExp;
+    var regExp = this.@com.googlecode.gwtx.java.util.emul.java.util.regex.Pattern::regExp;
     var result = text.match(regExp);
     if (result == null) return;
     for (var i=0;i<result.length;i++)
@@ -146,7 +146,7 @@ public class Pattern {
 
   private native void _split(String input, List results)
   /*-{
-    var regExp = this.@org.gwt.mosaic.core.client.util.regex.Pattern::regExp;
+    var regExp = this.@com.googlecode.gwtx.java.util.emul.java.util.regex.Pattern::regExp;
     var parts = input.split(regExp);
     for (var i=0;i<parts.length;i++)
     results.@java.util.ArrayList::add(Ljava/lang/Object;)(parts[i] );
@@ -180,7 +180,7 @@ public class Pattern {
    */
   public native boolean matches(String text)
   /*-{
-    var regExp = this.@org.gwt.mosaic.core.client.util.regex.Pattern::regExp;
+    var regExp = this.@com.googlecode.gwtx.java.util.emul.java.util.regex.Pattern::regExp;
     return regExp.test(text);
   }-*/;
 
@@ -191,7 +191,7 @@ public class Pattern {
    */
   public native String pattern()
   /*-{
-    var regExp = this.@org.gwt.mosaic.core.client.util.regex.Pattern::regExp;
+    var regExp = this.@com.googlecode.gwtx.java.util.emul.java.util.regex.Pattern::regExp;
     return regExp.source;
   }-*/;
 
