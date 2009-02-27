@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.code.gwtx</groupId>
   <artifactId>gwtx</artifactId>
-  <version>1.5.2</version>
+  <version>1.5.3-SNAPSHOT</version>
   <name>gwtx</name>
   <description>
     The goal of GWTx is to provide drop in support for an extended
@@ -53,9 +53,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:http://gwtx.googlecode.com/svn/tags/gwtx-1.5.2</connection>
-    <developerConnection>scm:svn:https://gwtx.googlecode.com/svn/tags/gwtx-1.5.2</developerConnection>
-    <url>http://code.google.com/p/gwtx/source/browse/tags/gwtx-1.5.2</url>
+    <connection>scm:svn:http://gwtx.googlecode.com/svn/trunk</connection>
+    <developerConnection>scm:svn:https://gwtx.googlecode.com/svn/trunk</developerConnection>
+    <url>http://code.google.com/p/gwtx/source/browse/</url>
   </scm>
 
   <build>
