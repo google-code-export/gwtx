@@ -17,5 +17,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface Patterns {
-    Pattern[] value();
+    PatternImpl[] value();
 }
