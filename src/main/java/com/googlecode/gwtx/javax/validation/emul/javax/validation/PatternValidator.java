@@ -6,12 +6,12 @@ package javax.validation;
  * class will be removed from this compilation unit.
  * --</pre>
  */
-public class PatternValidator implements Constraint<Pattern> {
+public class PatternValidator implements Constraint<PatternImpl> {
 
     private String regexp;
     private int flags;
 
-    public void initialize(Pattern params) {
+    public void initialize(PatternImpl params) {
         this.regexp = params.regex();
         this.flags = params.flags();
     }
