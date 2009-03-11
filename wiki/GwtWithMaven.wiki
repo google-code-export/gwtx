@@ -20,13 +20,6 @@ First of all, your Maven project must declare dependencies on the GWT binaries f
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>${gwt.version}</version>
-      <classifier>${gwt.variant}</classifier>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
       <version>${gwt.version}</version>
     </dependency>
@@ -35,7 +28,9 @@ First of all, your Maven project must declare dependencies on the GWT binaries f
 </project>
 }}}
 
-Configure gwt.version and gwt.variant to match your environment. 
+Don't declare gwt-dev as a dependency : this tooling library includes many opensource libs that you may use in your own application with distinct versions. This can introduce strange NoSuchMethod errors (when running unit tests for example). The gwt-maven-plugin will automagically download this jar and use it when running GWT tools.
+
+Configure gwt.version  to match your environment. 
 
 {{{
 <project>
@@ -43,58 +38,7 @@ Configure gwt.version and gwt.variant to match your environment.
  <properties>
    <!-- GWT 1.6 MileStone 1 on windows -->
    <gwt.version>1.6.0</gwt.version>
-   <gwt.variant>windows</gwt.variant>
  </properties>
- ...
-</project>
-}}}
-
-If you want to share your project and to be OS agnostic, you can use profiles to detect the gwt.variant to be used instead of hard-coding it as `<properties`> child element :
-
-{{{
-<project>
- ...
- <properties>
-   <!-- GWT 1.6 MileStone 1 -->
-   <gwt.version>1.6.0</gwt.version>
- </properties>
-
- <profiles>
-    <!-- detect the adequate GWT variant -->
-    <profile>
-      <id>windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <gwt.variant>windows</gwt.variant>
-      </properties>
-    </profile>
-    <profile>
-      <id>mac</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <properties>
-        <gwt.variant>mac</gwt.variant>
-      </properties>
-    </profile>
-    <profile>
-      <id>linux</id>
-      <activation>
-        <os>
-          <name>linux</name>
-        </os>
-      </activation>
-      <properties>
-        <gwt.variant>linux</gwt.variant>
-      </properties>
-    </profile>    
-  </profiles>
  ...
 </project>
 }}}
