@@ -1,0 +1,14 @@
+GWTx-java-beans.jar - The java.beans part of the GWTx library.
+
+GWTx-java-beans.jar contails the java.beans emulation provided by the GWTx project.
+
+Dependencies:
+    GWT-java-io.jar
+    GWT-java-util.jar
+
+Module XML:
+
+<inherits name="com.googlecode.gwtx.java.Beans"/> :
+    This inherits the java.beans emulation lib for use in your project.
+
+License: Apache License, Version 2.0

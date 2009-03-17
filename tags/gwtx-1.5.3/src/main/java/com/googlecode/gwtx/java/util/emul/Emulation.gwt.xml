@@ -1,0 +1,4 @@
+<module>
+   <inherits name="com.googlecode.gwtx.java.util.impl.Util"/>
+   <super-source/>
+</module>
