@@ -28,7 +28,63 @@ First of all, your Maven project must declare dependencies on the GWT binaries f
 </project>
 }}}
 
-Don't declare gwt-dev as a dependency : this tooling library includes many opensource libs that you may use in your own application with distinct versions. This can introduce strange NoSuchMethod errors (when running unit tests for example). The gwt-maven-plugin will automagically download this jar and use it when running GWT tools.
+GWT Web developpers don't need declare gwt-dev as a dependency : this tooling library includes many opensource libs that you may use in your own application with distinct versions. This can introduce strange NoSuchMethod errors (when running unit tests for example). The gwt-maven-plugin will automagically download this jar and use it when running GWT tools.
+
+Only GWT library developpers may need to add gwt-dev as a dependency (to use the rebind API). In such case, use profiles to detect the adequate variant of this dependency for your OS :
+{{{
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwt.version}</version>
+      <classifier>${gwt.variant}</classifier>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>mac</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <gwt.variant>mac</gwt.variant>
+      </properties>
+    </profile>
+    <profile>
+      <id>linux</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <gwt.variant>linux</gwt.variant>
+      </properties>
+    </profile>
+    <profile>
+      <id>windows</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <gwt.variant>windows</gwt.variant>
+      </properties>
+    </profile>
+  </profiles>
+}}}
+
 
 Configure gwt.version  to match your environment. 
 
