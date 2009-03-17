@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.code.gwtx</groupId>
   <artifactId>gwtx</artifactId>
-  <version>1.5.3</version>
+  <version>1.5.3-SNAPSHOT</version>
   <name>gwtx</name>
   <description>
     The goal of GWTx is to provide drop in support for an extended
@@ -53,9 +53,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:http://gwtx.googlecode.com/svn/tags/gwtx-1.5.3</connection>
-    <developerConnection>scm:svn:https://gwtx.googlecode.com/svn/tags/gwtx-1.5.3</developerConnection>
-    <url>http://code.google.com/p/gwtx/source/browse/tags/gwtx-1.5.3</url>
+    <connection>scm:svn:http://gwtx.googlecode.com/svn/trunk</connection>
+    <developerConnection>scm:svn:https://gwtx.googlecode.com/svn/trunk</developerConnection>
+    <url>http://code.google.com/p/gwtx/source/browse/</url>
   </scm>
 
   <build>
@@ -77,7 +77,6 @@
           <source>1.5</source>
           <target>1.5</target>
           <excludes>
-            <exclude>**/client/**/*.java</exclude>
             <exclude>**/emul/**/*.java</exclude>
           </excludes>
         </configuration>
@@ -92,55 +91,12 @@
       <version>${gwt.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>${gwt.version}</version>
-      <classifier>${gwt.variant}</classifier>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>mac</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <properties>
-        <gwt.variant>mac</gwt.variant>
-      </properties>
-    </profile>
-    <profile>
-      <id>linux</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <properties>
-        <gwt.variant>linux</gwt.variant>
-      </properties>
-    </profile>
-    <profile>
-      <id>windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <gwt.variant>windows</gwt.variant>
-      </properties>
-    </profile>
-  </profiles>
 
   <distributionManagement>
     <repository>
