@@ -92,8 +92,8 @@ Configure gwt.version  to match your environment.
 <project>
  ...
  <properties>
-   <!-- GWT 1.6 MileStone 1 on windows -->
-   <gwt.version>1.6.0</gwt.version>
+   <!-- GWT 1.6 final -->
+   <gwt.version>1.6.4</gwt.version>
  </properties>
  ...
 </project>
