@@ -101,6 +101,33 @@ Configure gwt.version  to match your environment.
 
 Now, your project can be used from your favorite IDE to write GWT code based on Maven dependencies.
 
+= Issue with GWT 1.6.4 =
+
+gwt-user 1.6.4 contains (by mistake ?) java source files for servlet-api. As a side effect, the compiler will compile them into your webapp classfolder, and you will get some strange `XXServlet is not a Servlet` error. To fix this setup you'll need to configure the compiler plugin to ignore those servlet-api sources :
+
+{{{
+<project>
+...
+ <build>
+  <plugins>
+    <plugin>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <configuration>
+        <source>1.5</source>
+        <target>1.5</target>
+        <excludes>
+           <exclude>javax/servlet/**</exclude>
+        </excludes>
+      </configuration>  
+    </plugin>
+  </plugins>
+ </build>
+ ...
+</project>
+
+}}}
+
+
 = Compilation =
 
 The [http://mojo.codehaus.org Mojo] project host a GWT plugin that can compile your GWT code into JavaScript and run other GWT tools. It also includes a code generator to automagically generate GWT-RPC async interfaces for your services.
